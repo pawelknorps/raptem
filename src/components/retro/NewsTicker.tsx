@@ -1,52 +1,38 @@
 import React from 'react';
 
-const NEWS = [
-  "!!! BAZAR_NEWS !!!",
-  "MIREK ZNALAZŁ NOWĄ DOSTAWĘ SPIRYTUSU W GNIEWKOWIE",
-  "POLONEZ OSIĄGNĄŁ PRĘDKOŚĆ DŹWIĘKU NA TRASIE TORUŃ-POZNAŃ",
-  "NOWY ALBUM 'KUJAWSKI TECHNO-FOLK' JUŻ W TWOIM RADIOMAGNETOFONIE",
-  "ZAKAZ PARKOWANIA FURMANEK POD REMIZĄ W KOWALU",
-  "PROCESOR 'KUJAWIAK-95' PRZEKROCZYŁ 100 MHZ",
-  "WIXA DNIA: BARTŁOMIEJ TAŃCZY OBERKA NA MASCE POLONEZA",
-  "RADIO BABILON NADAJE SYGNAŁ Z BRODNICY",
-];
-
 const NewsTicker: React.FC = () => {
-  const repeatedNews = [...NEWS, ...NEWS, ...NEWS].join('  |  ');
-  
   return (
-    <div className="news-ticker-container">
-      <div className="news-content">
-        {repeatedNews}
+    <div style={{
+      position: 'fixed',
+      top: '18px', // Just below the ChaosHeader
+      left: 0,
+      width: '100%',
+      height: '24px',
+      background: '#c0c0c0',
+      borderBottom: '2px outset #fff',
+      display: 'flex',
+      alignItems: 'center',
+      zIndex: 100000,
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        background: '#000080',
+        color: '#fff',
+        padding: '0 10px',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        whiteSpace: 'nowrap'
+      }}>
+        WIADOMOŚCI BAZARU:
       </div>
-      <style dangerouslySetInnerHTML={{ __html: `
-        .news-ticker-container {
-          background: #000;
-          color: #ffff00;
-          height: 24px;
-          overflow: hidden;
-          white-space: nowrap;
-          border-top: 2px solid #808080;
-          border-bottom: 2px solid #fff;
-          font-family: 'Courier New', monospace;
-          font-size: 14px;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          z-index: 1001;
-          position: sticky;
-          top: 28px; /* Below ChaosHeader */
-        }
-        .news-content {
-          display: inline-block;
-          padding-left: 100%;
-          animation: ticker 60s linear infinite;
-        }
-        @keyframes ticker {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(-100%, 0); }
-        }
-      `}} />
+      <div style={{ flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
+        <marquee style={{ fontSize: '12px', color: '#000', fontWeight: 'bold' }}>
+          +++ PILNE: PANE JANEK ZNALAZŁ NOWĄ KASETĘ POD SIEDZENIEM POLONEZA +++ POGODA: NA KUJAWACH PRZEWIDYWANA WIXA I OPADY SPIRYTUSU +++ NOTOWANIA: BONY DO REMIZY W GÓRĘ O 15% +++
+        </marquee>
+      </div>
     </div>
   );
 };

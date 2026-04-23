@@ -1,164 +1,167 @@
 .accordion-game-container {
   background: #c0c0c0;
-  padding: 4px;
-  border: 2px outset #fff;
-  width: 500px;
-  font-family: 'MS Sans Serif', Arial, sans-serif;
-  box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
+  border: 4px outset #fff;
+  padding: 5px;
+  color: #000;
+  font-family: var(--font-win95);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .accordion-header {
-  background: linear-gradient(90deg, #000080, #0831d4);
-  color: #fff;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: white;
+  padding: 2px 5px;
+  font-weight: bold;
   font-size: 11px;
-  padding: 3px 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
 }
 
 .register-bank {
   display: flex;
-  gap: 2px;
+  justify-content: center;
+  gap: 4px;
   padding: 5px;
   background: #808080;
-  border: 1px inset #fff;
-  margin: 5px 0;
+  border: 2px inset #fff;
 }
 
 .register-btn {
-  flex: 1;
-  font-size: 9px;
-  padding: 4px;
   background: #c0c0c0;
-  border: 1px outset #fff;
+  border: 2px outset #fff;
+  padding: 2px 10px;
+  font-size: 9px;
+  font-weight: bold;
   cursor: pointer;
-  text-transform: uppercase;
 }
 
 .register-btn.active {
-  background: #eee;
-  border-style: inset;
-  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
-  color: #000080;
-  font-weight: bold;
+  background: #fff;
+  border: 2px inset #fff;
+  color: #000;
 }
 
 .bellows-area {
-  background: #222;
-  padding: 10px;
+  height: 60px;
+  background: #444;
   border: 2px inset #000;
-  margin-bottom: 5px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .bellows-animation {
-  height: 60px;
   display: flex;
-  gap: 2px;
+  height: 40px;
+  width: 100%;
   transition: transform 0.1s ease-out;
 }
 
 .fold {
   flex: 1;
-  background: linear-gradient(90deg, #111, #444, #111);
-  border-left: 1px solid #000;
+  background: linear-gradient(90deg, #666, #222, #666);
+  border-left: 1px solid #111;
+  border-right: 1px solid #777;
 }
 
 .bellows-control {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #0f0;
-  font-family: monospace;
-  font-size: 10px;
-}
-
-.bellows-control input {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
   width: 100%;
+  text-align: center;
+  font-size: 8px;
+  color: #0f0;
 }
 
 .accordion-main {
-  display: flex;
-  gap: 5px;
-  padding: 5px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
 }
 
 .settings-panel {
-  width: 120px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   background: #dfdfdf;
-  padding: 8px;
-  border: 1px inset #fff;
+  border: 2px inset #fff;
+  padding: 5px;
 }
 
 .setting label {
   display: block;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: bold;
   margin-bottom: 2px;
 }
 
 .setting select, .setting input {
   width: 100%;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .keys-bank {
-  flex-grow: 1;
   display: flex;
   gap: 4px;
-  background: #000;
-  padding: 15px 10px;
+  height: 120px;
+  background: #222;
+  padding: 10px;
   border: 2px inset #fff;
 }
 
 .key {
   flex: 1;
-  height: 140px;
-  background: #fff;
-  border: 2px outset #eee;
   position: relative;
-  cursor: pointer;
+  background: none;
+  border: none;
   padding: 0;
+  cursor: pointer;
+  transition: transform 0.05s;
 }
 
 .key-cap {
   position: absolute;
-  top: 0; left: 0; right: 0; height: 10px;
-  background: rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border: 1px solid #000;
+  box-shadow: 2px 4px 0 #888;
 }
 
-.key.pressed {
-  transform: translateY(4px);
-  border-style: inset;
-  background: #ddd;
+.key.pressed .key-cap {
+  background: #ff0;
+  transform: translateY(2px);
+  box-shadow: 1px 1px 0 #888;
 }
 
 .key-label {
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   color: #000;
-}
-
-.accordion-footer-bar {
-  margin-top: 5px;
-  background: #000;
-  color: #0f0;
-  padding: 4px;
-  font-family: monospace;
-  font-size: 10px;
-  border: 1px inset #fff;
-  text-align: center;
+  z-index: 2;
 }
 
 .lcd-display {
-  text-shadow: 0 0 5px #0f0;
+  background: #040;
+  color: #0f0;
+  font-family: monospace;
+  font-size: 9px;
+  padding: 2px 5px;
+  border: 1px solid #0f0;
+  text-align: center;
+  text-transform: uppercase;
 }

@@ -31,6 +31,9 @@ import BazarTerminal from '../components/retro/BazarTerminal.tsx';
 import OnboardingWizard from '../components/retro/OnboardingWizard.tsx';
 import NewsTicker from '../components/retro/NewsTicker.tsx';
 import StickerBomb from '../components/retro/StickerBomb.tsx';
+import ContextMenu from '../components/retro/ContextMenu.tsx';
+import BazarScreensaver from '../components/retro/BazarScreensaver.tsx';
+import MerchListing from '../components/retro/MerchListing.tsx';
 ---
 
 <html lang="pl">
@@ -45,6 +48,8 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
     <ChaosHeader client:load />
     <NewsTicker client:load />
     <DesktopSurface client:load />
+    <ContextMenu client:load />
+    <BazarScreensaver client:load />
     <StickerBomb client:load count={30} />
     <SystemWarnings client:load />
     <BootSequence />
@@ -168,6 +173,10 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
              <img src="assets/construction.gif" alt="Help" style="filter: hue-rotate(180deg);" />
              <span>Instrukcja</span>
           </div>
+          <div class="desktop-icon" id="icon-merch">
+             <img src="assets/spirytus.png" alt="Merch" style="filter: hue-rotate(300deg) saturate(2);" />
+             <span>Kup Kasetę!</span>
+          </div>
         </div>
 
         <!-- Floating Stickers Everywhere -->
@@ -242,7 +251,7 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
           </div>
         </section>
 
-        <section id="muzyka" class="main-content-section" style="margin-top: 40px;">
+        <section id="muzyka" class="main-content-section" style="margin-top: 20px;">
           <div class="section-folder-tab">📁 C:\MUZYKA\AUDIO_TRACKS</div>
           <h2 class="wordart-3dred" style="font-size: 2rem;">AUDIO / MUZYKA</h2>
           <div style="display: grid; grid-template-columns: 1fr auto; gap: 40px; margin-top: 20px; align-items: start;">
@@ -295,10 +304,14 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
             <DraggableWindow client:load id="onboarding" title="Kreator Ustawień Bazaru" initialX={200} initialY={100}>
               <OnboardingWizard client:load />
             </DraggableWindow>
+
+            <DraggableWindow client:load id="merch" title="BazarAllegro - Aukcja nr 142823">
+              <MerchListing client:load />
+            </DraggableWindow>
           </div>
         </section>
 
-        <section id="video" class="main-content-section" style="margin-top: 40px;">
+        <section id="video" class="main-content-section" style="margin-top: 20px;">
           <div class="section-folder-tab">📁 C:\WIDEO\VHS_RIP</div>
           <h2 class="wordart-outline" style="font-size: 2rem;">MULTIMEDIA / WIDEO</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px; margin-top: 20px;">
@@ -312,7 +325,7 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
           </div>
         </section>
 
-        <section id="galeria" style="margin-top: 40px;">
+        <section id="galeria" style="margin-top: 20px;">
           <div class="section-folder-tab">📁 C:\FOTO\GALERIA</div>
           <h2 class="wordart-rainbow" style="font-size: 2rem;">GALERIA ZDJĘĆ</h2>
           <div style="margin-top: 20px;">
@@ -328,7 +341,7 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
           </div>
         </section>
 
-        <section id="radio" style="margin-top: 40px;">
+        <section id="radio" style="margin-top: 20px;">
           <h2 class="wordart-3dblue" style="font-size: 2rem;">RADIO BABILON</h2>
           <div class="win95-inset" style="padding: 20px; text-align: center; background: #c0c0c0; color: #000;">
             <img src="assets/construction.gif" alt="W budowie" style="height: 50px; margin-bottom: 10px;" />
@@ -341,7 +354,7 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
           </div>
         </section>
 
-        <section id="gigs" style="margin-top: 40px;">
+        <section id="gigs" style="margin-top: 20px;">
           <div class="section-folder-tab">📁 C:\TRASA\KALENDARZ</div>
           <h2 class="wordart-flame" style="font-size: 2rem;">GIGS / TRASA 2026</h2>
           <div style="display: flex; gap: 20px; align-items: start; flex-wrap: wrap;">
@@ -463,6 +476,7 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
       const iconVault = document.getElementById('icon-vault');
       const iconTerminal = document.getElementById('icon-terminal');
       const iconHelp = document.getElementById('icon-help');
+      const iconMerch = document.getElementById('icon-merch');
 
       let trashClickCount = 0;
 
@@ -528,6 +542,11 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
       iconHelp?.addEventListener('dblclick', () => {
         soundManager.play('click');
         openWindow('onboarding');
+      });
+
+      iconMerch?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('merch');
       });
 
       iconLogs?.addEventListener('dblclick', () => {
@@ -694,16 +713,21 @@ import StickerBomb from '../components/retro/StickerBomb.tsx';
 
       .desktop-icons {
         position: absolute;
-        top: 20px;
-        left: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        z-index: 10; /* Lower than windows but high enough to be seen */
-        padding: 10px;
+        top: 10px;
+        left: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 70px);
+        grid-auto-rows: 80px;
+        gap: 2px;
+        padding: 5px;
+        z-index: 10;
+        width: 100%;
+        max-width: 300px;
+        pointer-events: none; /* Let clicks pass through to surface if needed, but icons have pointer-events: auto */
       }
 
       .desktop-icon {
+        pointer-events: auto;
         display: flex;
         flex-direction: column;
         align-items: center;

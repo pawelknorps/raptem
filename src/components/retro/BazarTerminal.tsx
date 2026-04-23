@@ -1,90 +1,78 @@
-import React, { useState, useEffect, useRef } from 'react';
-import engine from '../../scripts/ChaosEngine';
+import React, { useState, useRef, useEffect } from 'react';
 
 const BazarTerminal: React.FC = () => {
   const [history, setHistory] = useState<string[]>([
-    "KujawiakOS v1.0 (c) 1995-2026 Mirek Software",
-    "System ready. Type 'help' for commands.",
+    "KujawiakOS v1.0 (Bazar-Kernel)",
+    "Typ 'help' dla listy komend.",
     ""
   ]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  const commands: Record<string, () => string> = {
+    help: () => "Dostępne komendy: help, cls, whoami, wixa, polonez, spiritus, date",
+    cls: () => { setHistory([]); return ""; },
+    whoami: () => "Użytkownik: GOŚĆ_WESELNY_2026",
+    wixa: () => "!!! WIXA DETECTED !!! PODKRĘCAM BASY...",
+    polonez: () => "VROOOOOM! Polonez driftuje po C:\\",
+    spiritus: () => "Status: 95% czystości. Zalecane rozcieńczenie.",
+    date: () => new Date().toLocaleString()
+  };
+
+  const handleCommand = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cmd = input.trim().toLowerCase();
+    let response = "";
+
+    if (cmd) {
+      if (commands[cmd]) {
+        response = commands[cmd]();
+      } else {
+        response = `Błąd: Nie znaleziono komendy '${cmd}'`;
+      }
+      
+      setHistory(prev => [...prev, `> ${input}`, response].filter(x => x !== ""));
     }
-  }, [history]);
-
-  const handleCommand = (cmd: string) => {
-    const newHistory = [...history, `> ${cmd}`];
-    const c = cmd.toLowerCase().trim();
-
-    if (c === 'help') {
-      newHistory.push("Available commands: help, wixa, clear, status, mirek, whoami");
-    } else if (c === 'wixa') {
-      newHistory.push("WIXA ACTIVATED! Increasing chaos...");
-      engine.recordInteraction();
-      engine.recordInteraction();
-    } else if (c === 'clear') {
-      setHistory([]);
-      return;
-    } else if (c === 'status') {
-      newHistory.push(`CPU_TEMP: 88°C`);
-      newHistory.push(`CHAOS_LEVEL: ${(engine.chaosLevel * 100).toFixed(2)}%`);
-      newHistory.push(`SPIRIT_LEVEL: 100%`);
-    } else if (c === 'mirek') {
-      newHistory.push("MIREK: 'Czego tu szukasz? Lepiej byś kujawiaka posłuchał!'");
-    } else if (c === 'whoami') {
-      newHistory.push("Guest User - IP: 192.168.1.wixa");
-    } else if (c === '') {
-      // do nothing
-    } else {
-      newHistory.push(`Unknown command: ${c}`);
-    }
-
-    setHistory(newHistory);
     setInput("");
   };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [history]);
 
   return (
     <div style={{
       background: '#000',
       color: '#0f0',
-      fontFamily: 'var(--font-mono)',
+      fontFamily: 'monospace',
+      fontSize: '12px',
       padding: '10px',
       height: '300px',
-      display: 'flex',
-      flexDirection: 'column',
-      fontSize: '12px'
+      overflowY: 'auto',
+      border: '2px inset #fff'
     }}>
-      <div 
-        ref={scrollRef}
-        style={{ flexGrow: 1, overflowY: 'auto', marginBottom: '10px' }}
-      >
-        {history.map((line, i) => (
-          <div key={i} style={{ marginBottom: '2px', minHeight: '1em' }}>{line}</div>
-        ))}
-      </div>
-      <div style={{ display: 'flex' }}>
+      {history.map((line, i) => (
+        <div key={i} style={{ marginBottom: '4px' }}>{line}</div>
+      ))}
+      <form onSubmit={handleCommand} style={{ display: 'flex' }}>
         <span style={{ marginRight: '5px' }}>&gt;</span>
         <input 
-          type="text"
-          value={input}
+          autoFocus
+          type="text" 
+          value={input} 
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleCommand(input)}
           style={{
             background: 'transparent',
             border: 'none',
             color: '#0f0',
-            fontFamily: 'inherit',
-            fontSize: 'inherit',
+            fontFamily: 'monospace',
+            fontSize: '12px',
             outline: 'none',
-            flexGrow: 1
+            width: '100%'
           }}
-          autoFocus
         />
-      </div>
+      </form>
+      <div ref={scrollRef} />
     </div>
   );
 };
