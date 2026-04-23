@@ -10,13 +10,12 @@ const BASE_FREQS = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.
 interface Voice {
   oscillators: { node: OscillatorNode; gain: GainNode }[];
   mainGain: GainNode;
-  noiseNode?: AudioBufferSourceNode;
 }
 
 const AccordionGame: React.FC = () => {
-  const [tuning, setTuning] = useState<TuningType>('STANDARD');
-  const [register, setRegister] = useState<Register>('MASTER');
-  const [condition, setCondition] = useState(0.9);
+  const [tuning, setTuning] = useState<TuningType>('BROKEN'); // Default to Broken!
+  const [register, setRegister] = useState<Register>('MUSETTE'); // Default to Musette for that tremolo
+  const [condition, setCondition] = useState(0.4); // Default to low condition
   const [bellows, setBellows] = useState(0.6);
   const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
   
@@ -24,59 +23,92 @@ const AccordionGame: React.FC = () => {
   const voicesRef = useRef<Map<string, Voice>>(new Map());
   const masterGainRef = useRef<GainNode | null>(null);
   const filterRef = useRef<BiquadFilterNode | null>(null);
+  const distortionRef = useRef<WaveShaperNode | null>(null);
+  const airNoiseRef = useRef<AudioBufferSourceNode | null>(null);
+  const airGainRef = useRef<GainNode | null>(null);
+
+  const makeDistortionCurve = (amount: number) => {
+    const k = amount;
+    const n_samples = 44100;
+    const curve = new Float32Array(n_samples);
+    const deg = Math.PI / 180;
+    for (let i = 0; i < n_samples; ++i) {
+      const x = (i * 2) / n_samples - 1;
+      curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+    }
+    return curve;
+  };
 
   const initAudio = () => {
     if (!audioCtxRef.current) {
       const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
       audioCtxRef.current = new AudioContextClass();
       
-      filterRef.current = audioCtxRef.current.createBiquadFilter();
+      const ctx = audioCtxRef.current;
+      
+      filterRef.current = ctx.createBiquadFilter();
       filterRef.current.type = 'lowpass';
       
-      masterGainRef.current = audioCtxRef.current.createGain();
+      distortionRef.current = ctx.createWaveShaper();
+      distortionRef.current.curve = makeDistortionCurve(100);
       
-      filterRef.current.connect(masterGainRef.current);
-      masterGainRef.current.connect(audioCtxRef.current.destination);
+      masterGainRef.current = ctx.createGain();
+      
+      // Air Noise Node (Constant hiss)
+      const bufferSize = 2 * ctx.sampleRate;
+      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      airNoiseRef.current = ctx.createBufferSource();
+      airNoiseRef.current.buffer = noiseBuffer;
+      airNoiseRef.current.loop = true;
+      airGainRef.current = ctx.createGain();
+      airGainRef.current.gain.value = 0.01;
+      
+      const airFilter = ctx.createBiquadFilter();
+      airFilter.type = 'lowpass';
+      airFilter.frequency.value = 1000;
+      
+      airNoiseRef.current.connect(airFilter);
+      airFilter.connect(airGainRef.current);
+      airGainRef.current.connect(masterGainRef.current);
+      airNoiseRef.current.start();
+
+      filterRef.current.connect(distortionRef.current);
+      distortionRef.current.connect(masterGainRef.current);
+      masterGainRef.current.connect(ctx.destination);
     }
     if (audioCtxRef.current.state === 'suspended') {
       audioCtxRef.current.resume();
     }
   };
 
-  // Update filter and gain based on bellows
   useEffect(() => {
-    if (filterRef.current && masterGainRef.current && audioCtxRef.current) {
+    if (filterRef.current && masterGainRef.current && airGainRef.current && audioCtxRef.current) {
       const ctx = audioCtxRef.current;
-      const freq = 500 + (bellows * 4000);
-      filterRef.current.frequency.setTargetAtTime(freq, ctx.currentTime, 0.05);
-      masterGainRef.current.gain.setTargetAtTime(bellows * 0.4, ctx.currentTime, 0.05);
+      const freq = 400 + (bellows * 3500) * condition;
+      filterRef.current.frequency.setTargetAtTime(freq, ctx.currentTime, 0.1);
+      masterGainRef.current.gain.setTargetAtTime(bellows * 0.4, ctx.currentTime, 0.1);
+      
+      // Air leak volume follows bellows
+      const airVol = (1 - condition) * 0.05 + (bellows * 0.02);
+      airGainRef.current.gain.setTargetAtTime(airVol, ctx.currentTime, 0.1);
     }
-  }, [bellows]);
+  }, [bellows, condition]);
 
   const getFreq = (index: number) => {
     let freq = BASE_FREQS[index];
     if (tuning === 'KUJAWY') {
-      // Just Intonation or specific folk shift
       const ratios = [1/1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, 2/1];
       freq = BASE_FREQS[0] * ratios[index];
     } else if (tuning === 'BROKEN') {
-      freq += (Math.random() - 0.5) * (1 - condition) * 40;
+      // Unstable bazar frequency
+      const drift = Math.sin(Date.now() * 0.001 + index) * (1 - condition) * 10;
+      freq += drift + (Math.random() - 0.5) * (1 - condition) * 20;
     }
     return freq;
-  };
-
-  const playClick = (ctx: AudioContext, gainNode: AudioNode) => {
-    const clickOsc = ctx.createOscillator();
-    const clickGain = ctx.createGain();
-    clickOsc.type = 'sine';
-    clickOsc.frequency.setValueAtTime(50, ctx.currentTime);
-    clickOsc.frequency.exponentialRampToValueAtTime(10, ctx.currentTime + 0.02);
-    clickGain.gain.setValueAtTime(0.05, ctx.currentTime);
-    clickGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.02);
-    clickOsc.connect(clickGain);
-    clickGain.connect(gainNode);
-    clickOsc.start();
-    clickOsc.stop(ctx.currentTime + 0.02);
   };
 
   const startNote = (key: string, index: number) => {
@@ -88,7 +120,18 @@ const AccordionGame: React.FC = () => {
     const voiceGain = ctx.createGain();
     voiceGain.connect(filterRef.current);
     
-    playClick(ctx, voiceGain);
+    // Mechanical key thump
+    const thump = ctx.createOscillator();
+    const thumpGain = ctx.createGain();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(60, ctx.currentTime);
+    thump.frequency.exponentialRampToValueAtTime(1, ctx.currentTime + 0.1);
+    thumpGain.gain.setValueAtTime(0.1, ctx.currentTime);
+    thumpGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.1);
+    thump.connect(thumpGain);
+    thumpGain.connect(voiceGain);
+    thump.start();
+    thump.stop(ctx.currentTime + 0.1);
 
     const oscs: { node: OscillatorNode; gain: GainNode }[] = [];
 
@@ -97,6 +140,16 @@ const AccordionGame: React.FC = () => {
       const g = ctx.createGain();
       osc.type = type;
       osc.frequency.setValueAtTime(f, ctx.currentTime);
+      
+      // Pitch Flutter (LFO)
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.frequency.value = 4 + Math.random() * 2;
+      lfoGain.gain.value = (1 - condition) * 15;
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.detune);
+      lfo.start();
+
       osc.detune.setValueAtTime(detune, ctx.currentTime);
       g.gain.setValueAtTime(gainVal, ctx.currentTime);
       osc.connect(g);
@@ -105,23 +158,22 @@ const AccordionGame: React.FC = () => {
       oscs.push({ node: osc, gain: g });
     };
 
-    // Registers logic
     if (register === 'MASTER' || register === 'BASSON') {
-      addReed(freq / 2, 'sawtooth', 0.2); // L
+      addReed(freq / 2, 'sawtooth', 0.2); 
     }
     if (register === 'MASTER' || register === 'VIOLIN' || register === 'MUSETTE') {
-      addReed(freq, 'square', 0.3); // M
+      addReed(freq, 'square', 0.3); 
     }
     if (register === 'MASTER' || register === 'MUSETTE' || register === 'VIOLIN') {
-      const tremolo = (1 - condition) * 15 + 4;
-      addReed(freq, 'square', 0.2, tremolo); // M+ (Tremolo)
+      const brokenTremolo = (1 - condition) * 40 + 10;
+      addReed(freq, 'square', 0.2, brokenTremolo); 
     }
     if (register === 'MASTER') {
-      addReed(freq * 2, 'sawtooth', 0.1); // H
+      addReed(freq * 2, 'sawtooth', 0.1); 
     }
 
     voiceGain.gain.setValueAtTime(0, ctx.currentTime);
-    voiceGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.03);
+    voiceGain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.05);
 
     voicesRef.current.set(key, { oscillators: oscs, mainGain: voiceGain });
     setActiveKeys(prev => new Set(prev).add(key));
@@ -132,7 +184,7 @@ const AccordionGame: React.FC = () => {
     if (voice && audioCtxRef.current) {
       const ctx = audioCtxRef.current;
       voice.mainGain.gain.cancelScheduledValues(ctx.currentTime);
-      voice.mainGain.gain.setTargetAtTime(0, ctx.currentTime, 0.03);
+      voice.mainGain.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
       
       setTimeout(() => {
         voice.oscillators.forEach(o => {
@@ -141,7 +193,7 @@ const AccordionGame: React.FC = () => {
         });
         voice.mainGain.disconnect();
         voicesRef.current.delete(key);
-      }, 100);
+      }, 150);
     }
     setActiveKeys(prev => {
       const next = new Set(prev);
@@ -169,9 +221,9 @@ const AccordionGame: React.FC = () => {
   }, [tuning, register, condition, bellows]);
 
   return (
-    <div className="accordion-game-container win95-inset">
+    <div className={`accordion-game-container win95-inset ${condition < 0.5 ? 'high-chaos-vibrate' : ''}`}>
       <div className="accordion-header">
-        <span>AKORDEON MIRKA v1.2 (PRO)</span>
+        <span>AKORDEON MIRKA v1.3 (BAZAR-MASTER)</span>
         <div className="win95-close-btn">×</div>
       </div>
       
@@ -188,13 +240,19 @@ const AccordionGame: React.FC = () => {
       </div>
 
       <div className="bellows-area">
-        <div className="bellows-animation" style={{ transform: `scaleX(${0.4 + bellows * 0.6})` }}>
+        <div 
+          className="bellows-animation" 
+          style={{ 
+            transform: `scaleX(${0.4 + bellows * 0.6})`,
+            filter: `hue-rotate(${(1 - condition) * 90}deg)`
+          }}
+        >
           {[...Array(12)].map((_, i) => (
-            <div key={i} className="fold"></div>
+            <div key={i} className="fold" style={{ opacity: 0.5 + Math.random() * (1 - condition) }}></div>
           ))}
         </div>
         <div className="bellows-control">
-          <label>CIŚNIENIE MIECHA</label>
+          <label>NAPRĘŻENIE MIECHA (AIR LEAK ACTIVE)</label>
           <input 
             type="range" min="0.1" max="1" step="0.01" 
             value={bellows} onChange={(e) => setBellows(parseFloat(e.target.value))} 
@@ -207,17 +265,20 @@ const AccordionGame: React.FC = () => {
           <div className="setting">
             <label>STRÓJ</label>
             <select value={tuning} onChange={e => setTuning(e.target.value as TuningType)}>
-              <option value="STANDARD">12-TET (Wesele)</option>
-              <option value="KUJAWY">Just Intonation (Folk)</option>
-              <option value="BROKEN">Bazar (Zepsuty)</option>
+              <option value="BROKEN">BAZAR (Zepsuty)</option>
+              <option value="KUJAWY">Folk (Rozstrojony)</option>
+              <option value="STANDARD">Standard (Nudny)</option>
             </select>
           </div>
           <div className="setting">
-            <label>STAN</label>
+            <label>STAN (CONDITION)</label>
             <input 
-              type="range" min="0" max="1" step="0.1" 
+              type="range" min="0" max="1" step="0.01" 
               value={condition} onChange={e => setCondition(parseFloat(e.target.value))} 
             />
+            <div style={{ fontSize: '8px', color: condition < 0.3 ? 'red' : 'green', marginTop: '4px' }}>
+              {condition < 0.3 ? '!!! TRUP !!!' : condition < 0.6 ? 'ŚREDNI' : 'IGŁA'}
+            </div>
           </div>
         </div>
 
@@ -230,7 +291,7 @@ const AccordionGame: React.FC = () => {
               onMouseUp={() => stopNote(k)}
               onMouseLeave={() => stopNote(k)}
             >
-              <span className="key-cap"></span>
+              <span className="key-cap" style={{ background: condition < 0.4 ? '#844' : '' }}></span>
               <span className="key-label">{k}</span>
             </button>
           ))}
@@ -238,8 +299,8 @@ const AccordionGame: React.FC = () => {
       </div>
 
       <div className="accordion-footer-bar">
-        <div className="lcd-display">
-          {register} | {tuning} | {Math.round(bellows * 100)}% PSI
+        <div className="lcd-display blink">
+          [ {register} ] | [ {tuning} ] | ERROR_CODE: {Math.floor((1 - condition) * 999)}
         </div>
       </div>
     </div>
