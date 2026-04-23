@@ -1,0 +1,63 @@
+<button id="wixaBtn" class="retro-button">KLIKNIJ ABY ODPALIĆ WIXĘ</button>
+
+<script>
+  let audioContext;
+  let source;
+  let isPlaying = false;
+
+  document.getElementById('wixaBtn').addEventListener('click', async () => {
+    if (isPlaying) return;
+    
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    try {
+      const response = await fetch('assets/track_01.mp3');
+      if (!response.ok) throw new Error('Audio file not found');
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+      source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+
+      // Vaporwave "screwed" effect parameters
+      source.playbackRate.value = 0.8; // Slow down by 20%
+      
+      // Optional: Add a low-pass filter to muffle the sound slightly
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 2000; // Hz
+
+      source.connect(filter);
+      filter.connect(audioContext.destination);
+      
+      source.start();
+      isPlaying = true;
+      document.getElementById('wixaBtn').innerText = "WIXA TRWA...";
+      
+    } catch (error) {
+      console.error("Audio playback failed:", error);
+      // Fallback or alert for the user if asset is missing
+      alert("Błąd ładowania wixy! Sprawdź czy assets/track_01.mp3 istnieje.");
+    }
+  });
+</script>
+
+<style>
+  .retro-button {
+    background-color: #C0C0C0;
+    border: 3px outset #FFFFFF;
+    border-bottom-color: #808080;
+    border-right-color: #808080;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .retro-button:active {
+    border: 3px inset #FFFFFF;
+    border-top-color: #808080;
+    border-left-color: #808080;
+  }
+</style>

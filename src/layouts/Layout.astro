@@ -1,0 +1,52 @@
+---
+import '../styles/bazar-wave.css';
+import CursorTrail from '../components/CursorTrail.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <base href={import.meta.env.BASE_URL} />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="RAPTEM - Najlepsza wixa kujawska w internecie. 90s aesthetic, vaporwave and deep folk." />
+  </head>
+  <body>
+    <div class="scanlines"></div>
+    <slot />
+    <CursorTrail />
+  </body>
+</html>
+
+<style is:global>
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    z-index: 10000;
+  }
+</style>

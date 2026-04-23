@@ -1,0 +1,214 @@
+.winamp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 275px;
+  font-family: 'MS Sans Serif', Geneva, sans-serif;
+  user-select: none;
+  filter: drop-shadow(5px 5px 0 rgba(0,0,0,0.5));
+}
+
+/* Main Window */
+.winamp-main {
+  background: #000;
+  border: 1px solid #333;
+  padding: 2px;
+  color: #00ff00;
+  display: flex;
+  flex-direction: column;
+}
+
+.winamp-title-bar {
+  background: #333;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #fff;
+  cursor: move;
+}
+
+.winamp-logo {
+  width: 10px;
+  height: 10px;
+  background: #ffff00;
+  margin-right: 5px;
+}
+
+.winamp-title-text {
+  flex-grow: 1;
+}
+
+.wa-btn {
+  width: 10px;
+  height: 10px;
+  background: #666;
+  border: 1px outset #fff;
+  font-size: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+}
+
+.winamp-display {
+  height: 40px;
+  background: #000;
+  border: 1px inset #666;
+  margin: 2px;
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  padding: 2px;
+}
+
+.winamp-timer {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.winamp-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding-bottom: 2px;
+}
+
+.vis-bar {
+  width: 3px;
+  background: linear-gradient(to top, #00ff00, #ffff00, #ff0000);
+}
+
+.winamp-info {
+  grid-column: 1 / span 3;
+  font-size: 10px;
+  color: #00ff00;
+  overflow: hidden;
+  position: relative;
+}
+
+.wa-marquee {
+  white-space: nowrap;
+}
+
+.winamp-controls {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 5px;
+}
+
+.wa-playback-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.wa-ctrl-btn {
+  background: #666;
+  border: 1px outset #fff;
+  color: #fff;
+  font-size: 8px;
+  width: 24px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.wa-ctrl-btn:active {
+  border-style: inset;
+}
+
+.wa-volume-slider input {
+  width: 60px;
+  height: 8px;
+  appearance: none;
+  background: #333;
+  border: 1px inset #666;
+}
+
+.wa-shuff-rep {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+}
+
+.wa-opt-btn {
+  background: #333;
+  border: 1px solid #666;
+  color: #888;
+  font-size: 8px;
+  padding: 2px 4px;
+}
+
+.wa-opt-btn.active {
+  color: #00ff00;
+  border-color: #00ff00;
+}
+
+/* Playlist Window */
+.winamp-playlist {
+  background: #000;
+  border: 1px solid #333;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wa-pl-header {
+  background: #333;
+  font-size: 9px;
+  color: #fff;
+  padding: 2px 5px;
+  font-weight: bold;
+}
+
+.wa-pl-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 11px;
+  color: #ffff00;
+  padding: 2px;
+}
+
+.wa-pl-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 5px;
+  cursor: pointer;
+}
+
+.wa-pl-item:hover {
+  background: #000080;
+}
+
+.wa-pl-item.active {
+  color: #fff;
+  background: #000080;
+}
+
+.wa-pl-num {
+  width: 20px;
+}
+
+.wa-pl-title {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-pl-dur {
+  margin-left: 10px;
+}
+
+.wa-pl-footer {
+  background: #333;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #fff;
+  padding: 2px 5px;
+}
