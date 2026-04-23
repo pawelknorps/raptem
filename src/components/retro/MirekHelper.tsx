@@ -65,7 +65,7 @@ const MirekHelper: React.FC = () => {
         }} />
       </div>
       <img 
-        src="assets/1000001791.jpg" 
+        src="assets/1000001791.webp" 
         style={{ 
           width: '60px', 
           height: '60px', 

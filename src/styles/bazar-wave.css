@@ -84,7 +84,7 @@ body {
 .nav-frame { z-index: 90; }
 .main-frame {
   background-color: var(--win-teal); /* Main content on teal background */
-  background-image: linear-gradient(rgba(0, 128, 128, 0.8), rgba(0, 128, 128, 0.8)), var(--main-bg, url('assets/kujawy_pattern.png'));
+  background-image: linear-gradient(rgba(0, 128, 128, 0.8), rgba(0, 128, 128, 0.8)), var(--main-bg, url('assets/kujawy_pattern.webp'));
   background-size: cover, 100px;
   color: var(--win-white);
   overflow-y: auto;

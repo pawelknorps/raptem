@@ -18,7 +18,7 @@
 
 body {
   background-color: var(--win-teal);
-  background-image: url('assets/kujawy_pattern.png');
+  background-image: url('assets/kujawy_pattern.webp');
   background-repeat: repeat;
   color: var(--win-black);
   font-family: var(--font-primary);
@@ -116,5 +116,5 @@ body {
 }
 
 body {
-  cursor: url('assets/polish_flag_cursor.png'), auto;
+  cursor: url('assets/polish_flag_cursor.webp'), auto;
 }

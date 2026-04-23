@@ -10,7 +10,7 @@ const MerchListing: React.FC = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         <div>
-          <img src="assets/spirytus.png" style={{ width: '100%', border: '1px solid #ccc', padding: '5px' }} alt="Product" />
+          <img src="assets/spirytus.webp" style={{ width: '100%', border: '1px solid #ccc', padding: '5px' }} alt="Product" />
           <p style={{ fontSize: '9px', textAlign: 'center', color: '#666' }}>[ Zdjęcie poglądowe ]</p>
         </div>
         <div>

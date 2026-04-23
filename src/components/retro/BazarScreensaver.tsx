@@ -52,7 +52,7 @@ const BazarScreensaver: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-        <img src="assets/low_poly_polonez.png" style={{ width: '200px' }} alt="Flying Polonez" />
+        <img src="assets/low_poly_polonez.webp" style={{ width: '200px' }} alt="Flying Polonez" />
         <h1 style={{ color: '#0f0', fontFamily: 'monospace', fontSize: '3rem', marginTop: '20px' }}>RAPTEM OS</h1>
       </div>
       <style>{`

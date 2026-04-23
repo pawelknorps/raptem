@@ -20,9 +20,9 @@ const AssetVault: React.FC = () => {
   };
 
   const assets = [
-    { name: 'mirek_final.jpg', src: 'assets/1000001791.jpg' },
-    { name: 'remiza_interior.png', src: 'assets/TeatrGospoda_jan26.jpg' },
-    { name: 'polonez_drift.gif', src: 'assets/low_poly_polonez.png' }
+    { name: 'mirek_final.webp', src: 'assets/1000001791.webp' },
+    { name: 'remiza_interior.webp', src: 'assets/TeatrGospoda_jan26.webp' },
+    { name: 'polonez_drift.gif', src: 'assets/low_poly_polonez.webp' }
   ];
 
   return (

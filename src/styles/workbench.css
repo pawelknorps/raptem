@@ -1,5 +1,33 @@
-/* Workbench for final polish */
-
 body {
   cursor: url('assets/polish_flag_cursor.svg'), auto !important;
+}
+
+.raptem-lore-container {
+  background: #fff;
+  border: 1px solid #000;
+  padding: 15px;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+}
+
+.raptem-lore-container section h2 {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.raptem-lore-container p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+@keyframes lore-glow {
+  0% { text-shadow: 0 0 5px #ff00ff; }
+  50% { text-shadow: 0 0 20px #00ffff; }
+  100% { text-shadow: 0 0 5px #ff00ff; }
+}
+
+.lore-ritual-text {
+  animation: lore-glow 2s infinite;
+  color: #000;
+  font-weight: bold;
 }

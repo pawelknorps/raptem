@@ -43,10 +43,10 @@ const BazarSettings: React.FC = () => {
       <fieldset style={{ border: '2px inset #fff', padding: '10px', marginBottom: '15px' }}>
         <legend style={{ fontSize: '11px', fontWeight: 'bold' }}>TAPETY BAZAROWE</legend>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/kujawy_pattern.png")')}>Tradycja</button>
+          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/kujawy_pattern.webp")')}>Tradycja</button>
           <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'none')}>Czysty Teal</button>
-          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/low_poly_polonez.png")')}>Polonez</button>
-          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/spirytus.png")')}>Spirytus</button>
+          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/low_poly_polonez.webp")')}>Polonez</button>
+          <button className="win95-button" style={{ fontSize: '9px' }} onClick={() => document.documentElement.style.setProperty('--main-bg', 'url("assets/spirytus.webp")')}>Spirytus</button>
         </div>
       </fieldset>
 

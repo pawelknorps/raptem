@@ -8,8 +8,8 @@ const StickerBomb: React.FC<StickerProps> = ({ count }) => {
   const assets = [
     'assets/new.gif',
     'assets/construction.gif',
-    'assets/spirytus.png',
-    'assets/dancer_pixel.png'
+    'assets/spirytus.webp',
+    'assets/dancer_pixel.webp'
   ];
 
   const stickers = useMemo(() => {
