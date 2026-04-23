@@ -7,6 +7,7 @@ interface DraggableWindowProps {
   children: React.ReactNode;
   initialX?: number;
   initialY?: number;
+  statusText?: string;
   onClose?: () => void;
 }
 
@@ -16,11 +17,11 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
   children, 
   initialX = 100, 
   initialY = 100,
+  statusText = "Gotowy",
   onClose 
 }) => {
   const { windows, registerWindow, toggleMinimize, focusWindow, closeWindow, openWindow } = useWindowStore();
   
-  // Load initial position from localStorage if available
   const getSavedPos = () => {
     if (typeof window === 'undefined') return { x: initialX, y: initialY };
     const saved = localStorage.getItem(`win_pos_${id}`);
@@ -66,19 +67,13 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
       if (isDragging && windowRef.current) {
         let newX = e.clientX - offset.current.x;
         let newY = e.clientY - offset.current.y;
-
-        // Snapping logic
         const width = windowRef.current.offsetWidth;
         const height = windowRef.current.offsetHeight;
 
         if (Math.abs(newX) < snapThreshold) newX = 0;
         if (Math.abs(newY) < snapThreshold) newY = 0;
-        if (Math.abs(window.innerWidth - (newX + width)) < snapThreshold) {
-          newX = window.innerWidth - width;
-        }
-        if (Math.abs(window.innerHeight - (newY + height + 32)) < snapThreshold) {
-          newY = window.innerHeight - height - 32;
-        }
+        if (Math.abs(window.innerWidth - (newX + width)) < snapThreshold) newX = window.innerWidth - width;
+        if (Math.abs(window.innerHeight - (newY + height + 32)) < snapThreshold) newY = window.innerHeight - height - 32;
 
         setPos({ x: newX, y: newY });
       }
@@ -87,11 +82,7 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
     const handleMouseUp = () => {
       if (isDragging) {
         setIsDragging(false);
-        // Save position to localStorage
-        localStorage.setItem(`win_pos_${id}`, JSON.stringify({
-          left: `${pos.x}px`,
-          top: `${pos.y}px`
-        }));
+        localStorage.setItem(`win_pos_${id}`, JSON.stringify({ left: `${pos.x}px`, top: `${pos.y}px` }));
       }
     };
 
@@ -99,7 +90,6 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
     }
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
@@ -144,9 +134,7 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
         className="window-title-bar window-title"
         onMouseDown={handleMouseDown}
         style={{
-          background: isFocused 
-            ? 'linear-gradient(90deg, #000080, #1084d0)' 
-            : '#808080',
+          background: isFocused ? 'linear-gradient(90deg, #000080, #1084d0)' : '#808080',
           color: 'white',
           padding: '2px 4px',
           fontWeight: 'bold',
@@ -162,31 +150,28 @@ const DraggableWindow: React.FC<DraggableWindowProps> = ({
           <span>{title}</span>
         </div>
         <div style={{ display: 'flex', gap: '2px' }}>
-          <button 
-            className="win95-button" 
-            style={{ padding: '0 4px', fontSize: '10px' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleMinimize(id);
-            }}
-          >
-            _
-          </button>
-          <button 
-            className="win95-button" 
-            style={{ padding: '0 4px', fontSize: '10px' }} 
-            onClick={(e) => {
-              e.stopPropagation();
-              closeWindow(id);
-              if (onClose) onClose();
-            }}
-          >
-            X
-          </button>
+          <button className="win95-button" style={{ padding: '0 4px', fontSize: '10px' }} onClick={(e) => { e.stopPropagation(); toggleMinimize(id); }}>_</button>
+          <button className="win95-button" style={{ padding: '0 4px', fontSize: '10px' }} onClick={(e) => { e.stopPropagation(); closeWindow(id); if (onClose) onClose(); }}>X</button>
         </div>
       </div>
-      <div className="window-content" style={{ padding: '10px', overflow: 'auto', maxHeight: '80vh' }}>
+      
+      <div className="window-content" style={{ padding: '10px', overflow: 'auto', maxHeight: '80vh', flexGrow: 1 }}>
         {children}
+      </div>
+
+      {/* Status Bar for better understanding */}
+      <div className="window-status-bar" style={{
+        background: '#c0c0c0',
+        borderTop: '2px inset #fff',
+        padding: '2px 5px',
+        fontSize: '9px',
+        display: 'flex',
+        gap: '10px',
+        color: '#444'
+      }}>
+        <div style={{ borderRight: '1px solid #888', paddingRight: '10px' }}>{statusText}</div>
+        <div>CPU: 0%</div>
+        <div style={{ marginLeft: 'auto' }}>1 objects selected</div>
       </div>
     </div>
   );

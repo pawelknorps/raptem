@@ -9,27 +9,27 @@ const OnboardingWizard: React.FC = () => {
     {
       title: "Witamy w KujawiakOS!",
       content: "Gratulacje! Właśnie uruchomiłeś najbardziej zaawansowany system operacyjny na Kujawach. Ten krótki przewodnik pokaże Ci, jak przetrwać na Bazarze.",
-      image: "/assets/polonez.png"
+      image: "assets/polonez.png"
     },
     {
       title: "Okna i Wixy",
       content: "Wszystkie programy otwierają się w oknach. Możesz je przeciągać, minimalizować do paska zadań na dole i zamykać iksem. Każda Twoja akcja zwiększa POZIOM WIXY!",
-      image: "/assets/new.gif"
+      image: "assets/new.gif"
     },
     {
       title: "Ikony Pulpitu",
       content: "Kliknij dwa razy (Double Click), aby uruchomić program. Możesz też przeciągać ikony do Kosza, jeśli Mirek Cię zdenerwuje.",
-      image: "/assets/spirytus.png"
+      image: "assets/spirytus.png"
     },
     {
       title: "Terminal Sołtysa",
       content: "Dla zaawansowanych użytkowników mamy Terminal. Wpisz 'help', aby zobaczyć listę komend. Pamiętaj: 'wixa' to Twoja ulubiona komenda.",
-      image: "/assets/construction.gif"
+      image: "assets/construction.gif"
     },
     {
       title: "Gotowy na Wixę?",
       content: "To wszystko! Eksploruj, klikaj i nie bój się błędów systemowych - w tym systemie błędy to po prostu styl życia.",
-      image: "/assets/dancer_pixel.png"
+      image: "assets/dancer_pixel.png"
     }
   ];
 

@@ -58,7 +58,7 @@ const WinAmp: React.FC = () => {
       <div style={{ background: '#000', padding: '10px', border: '1px solid #444' }}>
         <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
           <div style={{ width: '60px', height: '60px', border: '1px solid #0f0', position: 'relative', overflow: 'hidden' }}>
-            <img src="/assets/1000001788.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'contrast(1.5) brightness(0.8)' }} alt="Album Art" />
+            <img src="assets/1000001788.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'contrast(1.5) brightness(0.8)' }} alt="Album Art" />
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(rgba(0,255,0,0.1), transparent)' }}></div>
           </div>
           <div style={{ flexGrow: 1 }}>

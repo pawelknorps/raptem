@@ -63,7 +63,7 @@ const Taskbar: React.FC = () => {
           borderStyle: startOpen ? 'inset' : 'outset'
         }}
       >
-        <img src="/assets/polonez.png" style={{ height: '16px', filter: chaosLevel > 0.8 ? 'hue-rotate(90deg)' : '' }} alt="Start" />
+        <img src="assets/polonez.png" style={{ height: '16px', filter: chaosLevel > 0.8 ? 'hue-rotate(90deg)' : '' }} alt="Start" />
         START
       </button>
 
@@ -128,7 +128,7 @@ const Taskbar: React.FC = () => {
           </div>
         </div>
         
-        <img src="/assets/spirytus.png" style={{ height: '16px', animation: chaosLevel > 0.5 ? 'spin 2s linear infinite' : 'none' }} alt="Tray" />
+        <img src="assets/spirytus.png" style={{ height: '16px', animation: chaosLevel > 0.5 ? 'spin 2s linear infinite' : 'none' }} alt="Tray" />
         <span style={{ minWidth: '60px' }}>{time}</span>
       </div>
 

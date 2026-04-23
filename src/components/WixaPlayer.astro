@@ -13,7 +13,7 @@
     }
 
     try {
-      const response = await fetch('/assets/track_01.mp3');
+      const response = await fetch('assets/track_01.mp3');
       if (!response.ok) throw new Error('Audio file not found');
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -39,7 +39,7 @@
     } catch (error) {
       console.error("Audio playback failed:", error);
       // Fallback or alert for the user if asset is missing
-      alert("Błąd ładowania wixy! Sprawdź czy /assets/track_01.mp3 istnieje.");
+      alert("Błąd ładowania wixy! Sprawdź czy assets/track_01.mp3 istnieje.");
     }
   });
 </script>

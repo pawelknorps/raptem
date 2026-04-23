@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 
 const ASSETS = [
-  '/assets/spirytus.png',
-  '/assets/new.gif',
-  '/assets/construction.gif',
-  '/assets/dancer_pixel.png',
-  '/assets/accordion.png',
-  '/assets/basy.png',
-  '/assets/polonez.png',
-  '/assets/pks_stop.png',
+  'assets/spirytus.png',
+  'assets/new.gif',
+  'assets/construction.gif',
+  'assets/dancer_pixel.png',
+  'assets/accordion.png',
+  'assets/basy.png',
+  'assets/polonez.png',
+  'assets/pks_stop.png',
 ];
 
 const StickerBomb: React.FC<{ count?: number }> = ({ count = 15 }) => {

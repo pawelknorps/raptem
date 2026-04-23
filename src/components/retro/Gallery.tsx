@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import SlowLoadingImage from './SlowLoadingImage';
 
 const images = [
-  { src: '/assets/1000001787.jpg', alt: 'Koncert w Kowalu' },
-  { src: '/assets/1000001815.jpg', alt: 'Bazarowe Szaleństwo' },
-  { src: '/assets/TeatrGospoda_jan26.jpg', alt: 'Teatr Gospoda 2026' },
-  { src: '/assets/6d11a141-15f4-40c6-91d3-1222905371ed.jpeg', alt: 'Kujawiak Vapor Session' }
+  { src: 'assets/1000001787.jpg', alt: 'Koncert w Kowalu' },
+  { src: 'assets/1000001815.jpg', alt: 'Bazarowe Szaleństwo' },
+  { src: 'assets/TeatrGospoda_jan26.jpg', alt: 'Teatr Gospoda 2026' },
+  { src: 'assets/6d11a141-15f4-40c6-91d3-1222905371ed.jpeg', alt: 'Kujawiak Vapor Session' }
 ];
 
 const Gallery: React.FC = () => {

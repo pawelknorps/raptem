@@ -14,7 +14,7 @@ const MerchWizard: React.FC = () => {
     <div style={{ padding: '20px', background: '#c0c0c0', color: '#000', fontFamily: 'sans-serif', fontSize: '12px' }}>
       <div style={{ display: 'flex', gap: '20px' }}>
         <div style={{ width: '100px', height: '150px', background: '#808080', border: '1px solid #000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/assets/new.gif" style={{ width: '50px' }} alt="Install" />
+          <img src="assets/new.gif" style={{ width: '50px' }} alt="Install" />
         </div>
         <div style={{ flexGrow: 1 }}>
           <h3 style={{ marginBottom: '10px' }}>{steps[step].title}</h3>
