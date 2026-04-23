@@ -1,0 +1,55 @@
+---
+interface Props {
+  text: string;
+  speed?: string;
+  backgroundColor?: string;
+  textColor?: string;
+}
+
+const { 
+  text, 
+  speed = '20s', 
+  backgroundColor = 'var(--win-black)', 
+  textColor = 'var(--text-lime)' 
+} = Astro.props;
+---
+
+<div class="marquee-container" style={`background-color: ${backgroundColor}; color: ${textColor};`}>
+  <div class="marquee-content" style={`animation-duration: ${speed};`}>
+    <img src="/assets/dancer_pixel.png" alt="" class="dancer" />
+    <span>{text}</span>
+    <img src="/assets/dancer_pixel.png" alt="" class="dancer" />
+    <span>{text}</span>
+    <img src="/assets/dancer_pixel.png" alt="" class="dancer" />
+  </div>
+</div>
+
+<style>
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5px 0;
+    border-top: 2px solid #555;
+    border-bottom: 2px solid #555;
+  }
+
+  .marquee-content {
+    display: inline-block;
+    animation: marquee linear infinite;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .dancer {
+    height: 24px;
+    vertical-align: middle;
+    margin: 0 10px;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>

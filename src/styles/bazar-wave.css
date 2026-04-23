@@ -1,0 +1,295 @@
+:root {
+  /* Polish Bazar-Wave Palette (Revised for Accessibility) */
+  --win-teal: #008080;
+  --win-grey: #c0c0c0;
+  --win-white: #ffffff;
+  --win-black: #000000;
+  
+  --chaos-level: 0;
+  --chaos-hue: 0deg;
+
+  --link-cyan: #00ffff;
+  --link-visited: #ff00ff;
+  --text-yellow: #ffff00;
+  --text-lime: #00ff00;
+  --vapor-cyan: #00ffff;
+  --vapor-magenta: #ff00ff;
+
+  --font-primary: 'Times New Roman', Times, serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: url('/assets/polish_flag_cursor.svg'), auto !important;
+}
+
+body {
+  background-color: var(--win-teal);
+  background-image: url('/assets/kujawy_embroidery_lowres.gif');
+  background-size: 200px;
+  color: var(--win-white); /* Improved contrast on teal */
+  font-family: var(--font-primary);
+  min-height: 100vh;
+  line-height: 1.4;
+}
+
+/* Responsive Frame Layout */
+.app-container {
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  gap: 4px;
+  padding: 4px;
+  position: relative;
+}
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+  .app-container {
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 150px 1fr 40px;
+  }
+
+  .header-frame { grid-column: 1 / -1; }
+  .nav-frame { grid-column: 1; grid-row: 2; }
+  .main-frame { grid-column: 2; grid-row: 2; }
+  .footer-frame { grid-column: 1 / -1; }
+}
+
+/* Mobile Layout */
+@media (max-width: 767px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+  
+  .header-frame { grid-row: 1; }
+  .nav-frame { grid-row: 2; }
+  .main-frame { grid-row: 3; }
+  .footer-frame { grid-row: 4; }
+}
+
+.header-frame, .nav-frame, .main-frame, .footer-frame {
+  background-color: var(--win-grey);
+  border: 4px inset var(--win-white);
+  padding: 10px;
+  color: var(--win-black);
+  position: relative;
+}
+
+.header-frame { z-index: 100; }
+.nav-frame { z-index: 90; }
+.main-frame {
+  background-color: var(--win-teal); /* Main content on teal background */
+  background-image: linear-gradient(rgba(0, 128, 128, 0.8), rgba(0, 128, 128, 0.8)), var(--main-bg, url('/assets/kujawy_pattern.png'));
+  background-size: cover, 100px;
+  color: var(--win-white);
+  overflow-y: auto;
+  z-index: 80;
+}
+
+/* Typography & Links */
+a {
+  color: var(--link-cyan); /* Better contrast on teal */
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-primary);
+  color: var(--text-yellow); /* Decorative headers */
+  text-transform: uppercase;
+}
+
+/* Table for Gigs - Strict Business Requirement */
+.gigs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--win-grey);
+  color: var(--win-black);
+  margin: 20px 0;
+}
+
+.gigs-table th, .gigs-table td {
+  border: 1px solid var(--win-black);
+  padding: 8px;
+  text-align: left;
+}
+
+.gigs-table th {
+  background: #a0a0a0;
+}
+
+/* Components */
+.win95-button {
+  background-color: var(--win-grey);
+  border: 2px outset var(--win-white);
+  padding: 5px 15px;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: bold;
+  color: var(--win-black);
+  text-align: center;
+  display: inline-block;
+}
+
+.win95-button:active {
+  border: 2px inset var(--win-white);
+  background-color: #a0a0a0;
+}
+
+.win95-button:hover {
+  background-color: #d0d0d0;
+}
+
+#cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.win95-inset {
+  border: 2px inset #ffffff;
+  background: #c0c0c0;
+}
+
+.win95-window-header {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: white;
+  padding: 2px 4px;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/* Windows 95 Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--win-grey);
+  background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                    linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+  background-size: 2px 2px;
+  background-position: 0 0, 1px 1px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--win-grey);
+  border: 2px outset #fff;
+}
+::-webkit-scrollbar-button {
+  background-color: var(--win-grey);
+  border: 2px outset #fff;
+  width: 16px;
+  height: 16px;
+}
+
+/* Subtle CRT Overlay */
+body::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  z-index: 9999;
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(2px, -2px); }
+  50% { transform: translate(-2px, 2px); }
+  75% { transform: translate(2px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+.high-chaos-vibrate {
+  animation: vibrate 0.1s linear infinite;
+}
+
+/* Draggable Window Styles */
+.draggable-window {
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.draggable-window:active {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.window-title {
+  cursor: move;
+  user-select: none;
+}
+
+/* Interactive Asset Feedback */
+.interactive-asset {
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+}
+
+.interactive-asset:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2) drop-shadow(0 0 5px var(--vapor-cyan)) !important;
+}
+
+.interactive-asset:active {
+  transform: scale(0.95);
+}
+
+/* Chaos Effects */
+@keyframes chaos-vibrate {
+  0% { transform: translate(0,0) rotate(0deg); }
+  25% { transform: translate(1px, 0.5px) rotate(0.5deg); }
+  50% { transform: translate(-0.5px, -1px) rotate(-0.5deg); }
+  75% { transform: translate(-1px, 0.5px) rotate(0deg); }
+  100% { transform: translate(0.5px, -0.5px) rotate(0.5deg); }
+}
+
+.high-chaos-vibrate {
+  animation: chaos-vibrate 0.1s infinite;
+}
+
+.high-chaos-bg {
+  filter: hue-rotate(var(--chaos-hue)) contrast(120%);
+  transition: filter 0.1s;
+}
+
+.chaos-flash-bg {
+  background-color: #ff00ff !important;
+}
+
+.lasso-selection {
+  position: fixed;
+  border: 1px dashed white;
+  background: rgba(0, 255, 255, 0.2);
+  pointer-events: none;
+  z-index: 10000;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blink {
+  animation: blink 0.5s step-end infinite;
+}

@@ -1,0 +1,110 @@
+---
+---
+<div id="boot-sequence" class="boot-container">
+  <div id="boot-text" class="boot-text"></div>
+  <button id="skip-boot" class="skip-btn">PRESS [ESC] OR CLICK TO SKIP</button>
+</div>
+
+<style>
+  .boot-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Silkscreen', monospace;
+    padding: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .boot-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+  .skip-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #444;
+    cursor: pointer;
+    font-size: 10px;
+  }
+  .skip-btn:hover {
+    color: #fff;
+    border-color: #fff;
+  }
+</style>
+
+<script>
+  const lines = [
+    "KujawiakOS v1.3 (23.04.2026)",
+    "Copyright © 2026 Raptem Village Band",
+    "CPU: Motorola 68000 @ 7.09 MHz (Prawdziwa moc z kujawiaka)",
+    "RAM: 512KB Chip / 0KB Fast (Starczy na dwa słoiki)",
+    "",
+    "Loading kickstart v34.5...",
+    "Mounting DF0: [STODOŁA]",
+    "Mounting DF1: [SŁOIK]",
+    "Assigning FOLK: to DF0:muzyka/kujawiaki",
+    "Assigning BIEL: to DF0:foto/gospodyni",
+    "",
+    "Searching for band members...",
+    "Found: Skrzypce (100% Folk-Sync)",
+    "Found: Bęben (Rhythm-Core detected)",
+    "Found: Bas (Deep-Root established)",
+    "",
+    "Starting Workbench...",
+    "LoadWB",
+    "EndCLI"
+  ];
+
+  const bootText = document.getElementById('boot-text');
+  const bootSequence = document.getElementById('boot-sequence');
+  const skipBtn = document.getElementById('skip-boot');
+  let currentLine = 0;
+  let isSkipped = false;
+
+  function skip() {
+    isSkipped = true;
+    bootSequence.style.display = 'none';
+  }
+
+  skipBtn.addEventListener('click', skip);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') skip();
+  });
+
+  function typeLine() {
+    if (isSkipped) return;
+    if (currentLine < lines.length) {
+      const line = lines[currentLine];
+      const div = document.createElement('div');
+      bootText.appendChild(div);
+      
+      let charIndex = 0;
+      const interval = setInterval(() => {
+        if (charIndex < line.length) {
+          div.textContent += line[charIndex];
+          charIndex++;
+        } else {
+          clearInterval(interval);
+          currentLine++;
+          // Even faster line transitions
+          setTimeout(typeLine, line.length === 0 ? 5 : 10 + Math.random() * 20);
+        }
+      }, 2); // 2ms per char
+    } else {
+      setTimeout(() => {
+        bootSequence.style.display = 'none';
+      }, 300); // 300ms final pause instead of 1000ms
+    }
+  }
+
+  typeLine();
+</script>

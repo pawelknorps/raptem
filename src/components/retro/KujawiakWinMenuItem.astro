@@ -1,0 +1,60 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  title: string;
+  icon?: string;
+  id?: string;
+}
+
+const { href, label, title, icon = "/assets/dancer_pixel.png", id } = Astro.props;
+---
+
+<a href={href} class="win-menu-item" id={id}>
+  <img src={icon} class="menu-icon" alt="" />
+  <span class="drive-label">{label}</span>
+  <span class="item-title">{title}</span>
+</a>
+
+<style>
+  .win-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid transparent;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    transition: all 0.1s;
+  }
+
+  .menu-icon {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+  }
+
+  .win-menu-item:hover {
+    background-color: #000080;
+    color: #fff;
+    border: 1px dotted #fff;
+    transform: translateX(4px);
+  }
+
+  .drive-label {
+    font-weight: bold;
+    color: #808080;
+    font-size: 11px;
+  }
+
+  .win-menu-item:hover .drive-label {
+    color: #c0c0c0;
+  }
+
+  .item-title {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+</style>

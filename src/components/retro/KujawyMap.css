@@ -1,0 +1,221 @@
+.kujawy-map-container {
+  background: #c0c0c0;
+  border: 3px outset #fff;
+  padding: 2px;
+  max-width: 800px;
+  margin: 20px auto;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.win95-window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+  padding: 3px 5px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.map-area {
+  background: #000080;
+  border: 2px inset #fff;
+  position: relative;
+  overflow: hidden;
+  height: 500px;
+}
+
+.map-svg {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.map-continent {
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.5));
+}
+
+.map-marker {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.marker-rect {
+  fill: yellow;
+  stroke: #000;
+  stroke-width: 0.5;
+}
+
+.map-marker:hover .marker-rect {
+  fill: #fff;
+  filter: drop-shadow(0 0 5px yellow);
+}
+
+.map-marker.active .marker-rect {
+  fill: #ff00ff;
+  stroke: #fff;
+}
+
+.marker-label {
+  pointer-events: none;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-shadow: 1px 1px #000;
+  opacity: 0.7;
+}
+
+.map-marker:hover .marker-label {
+  opacity: 1;
+  font-size: 3px;
+}
+
+.tour-line {
+  filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.5));
+  animation: dash 10s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.map-status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+  padding: 2px 5px;
+  font-size: 10px;
+  color: #000;
+  z-index: 10;
+}
+
+.village-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(1px);
+}
+
+.folder-window {
+  width: 90%;
+  max-width: 500px;
+  background: #c0c0c0;
+  border: 3px outset #fff;
+  box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+}
+
+.folder-content {
+  padding: 2px;
+  background: #c0c0c0;
+}
+
+.village-detail {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: #fff;
+  border: 2px inset #fff;
+}
+
+.image-container {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.folder-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #000;
+  display: block;
+  image-rendering: auto;
+}
+
+.image-caption {
+  font-size: 9px;
+  margin-top: 4px;
+  color: #666;
+}
+
+.village-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.village-title {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #000080;
+  border-bottom: 2px solid #000080;
+}
+
+.village-status {
+  font-weight: bold;
+  font-size: 11px;
+  color: #d00;
+  margin-bottom: 10px;
+}
+
+.village-desc-box {
+  background: #f0f0f0;
+  padding: 10px;
+  border: 1px inset #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.window-footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.folder-icon {
+  fill: #ffcc00;
+  stroke: #000;
+  filter: drop-shadow(1px 1px 0 #fff);
+}
+
+.map-marker:hover .folder-icon {
+  fill: #fff;
+  transform: scale(1.2);
+}
+
+.next-btn {
+  margin-top: 10px;
+  width: 100%;
+  font-size: 11px;
+  background: #c0c0c0;
+  border: 2px outset #fff;
+}
+
+.next-btn:active {
+  border-style: inset;
+}
+
+.map-footer {
+  background: #c0c0c0;
+  padding: 5px;
+  font-size: 10px;
+  text-align: center;
+  border-top: 1px solid #808080;
+}

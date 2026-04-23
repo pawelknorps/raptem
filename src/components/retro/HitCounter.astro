@@ -1,0 +1,37 @@
+---
+interface Props {
+  startCount?: number;
+}
+
+const { startCount = 1428 } = Astro.props;
+// In a real scenario, this would fetch from an API
+const countStr = startCount.toString().padStart(6, '0');
+const digits = countStr.split('');
+---
+
+<div class="hit-counter">
+  {digits.map((digit) => (
+    <span class="digit">{digit}</span>
+  ))}
+</div>
+
+<style>
+  .hit-counter {
+    display: inline-flex;
+    background: #000;
+    padding: 3px;
+    border: 2px inset #fff;
+    gap: 2px;
+  }
+
+  .digit {
+    background: #111;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 2px 5px;
+    border: 1px solid #333;
+    text-shadow: 0 0 5px #0f0;
+  }
+</style>
