@@ -9,6 +9,9 @@ const BazarSettings: React.FC = () => {
     const sub = (level: number, count: number) => {
       setChaos(level);
       setInteractions(count);
+      if (level > 0.7) {
+        window.dispatchEvent(new CustomEvent('quest-complete', { detail: 'chaos' }));
+      }
     };
     chaosEngine.subscribe(sub);
   }, []);

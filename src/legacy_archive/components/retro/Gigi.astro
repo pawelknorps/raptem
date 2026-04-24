@@ -1,0 +1,51 @@
+---
+const gigs = [
+  { date: '12.05.2026', place: 'OSP KRZYWOSĄDZ', event: 'MAJÓWKA Z POMPĄ' },
+  { date: '19.05.2026', place: 'CIECHOCINEK', event: 'DOŻYNKI CYBER-FOLK' },
+  { date: '01.06.2026', place: 'STODOŁA U SOŁTYSA', event: 'DZIEŃ DZIECKA (SPEKTAKL)' },
+  { date: '15.06.2026', place: 'REMIZA WOLIŃSKA', event: 'TURNIEJ KÓŁ GOSPODYŃ' }
+];
+---
+
+<div class="gigi-container">
+  <div class="win95-window-header">GIGI.EXE - Harmonogram</div>
+  <div class="gigi-list">
+    {gigs.map(gig => (
+      <div class="gig-row">
+        <span class="gig-date">[{gig.date}]</span>
+        <span class="gig-place">{gig.place}</span>
+        <span class="gig-event">- {gig.event}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .gigi-container {
+    border: 2px solid #808080;
+    margin-top: 20px;
+    background: #000;
+  }
+  .gigi-list {
+    padding: 10px;
+    font-family: monospace;
+    color: #0f0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .gig-row {
+    border-bottom: 1px dashed #004400;
+    padding: 4px 0;
+  }
+  .gig-date {
+    color: #ffff00;
+    margin-right: 10px;
+  }
+  .gig-place {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .gig-event {
+    color: #00ff00;
+  }
+</style>

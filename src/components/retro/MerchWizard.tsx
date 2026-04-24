@@ -5,7 +5,7 @@ const MerchWizard: React.FC = () => {
 
   const steps = [
     { title: 'Wstęp', content: 'Witamy w instalatorze Kaset Raptem v1.0. Czy chcesz nabyć nową kasetę?' },
-    { title: 'Wybór', content: 'Wybierz produkt: [X] KUJAWIAK WIXA (2026) - 15 ZŁ' },
+    { title: 'Wybór', content: 'Wybierz produkt: [X] KUJAWIAK SPEKTAKL (2026) - 15 ZŁ' },
     { title: 'Płatność', content: 'Proszę zostawić pieniądze pod kamieniem obok remizy.' },
     { title: 'Finał', content: 'Dziękujemy! Kaseta zostanie dostarczona przez gołębia pocztowego.' }
   ];

@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { globalWixa } from '../../../scripts/WixaEngine';
+import { globalStage } from '../../../scripts/StageEngine';
+import { usePlayerStore } from '../../../lib/playerStore';
+
+const tracks = [
+  "RAPTEM - KUJAWIAK SPEKTAKL.MP3",
+  "RAPTEM - SPIRYTUS DANCE.MP3",
+  "RAPTEM - MURZYNNO DRIFT.MP3",
+  "RAPTEM - BAZAR WAVE ANTHEM.MP3",
+  "RAPTEM - TEATR GOSPODA LIVE.MP3"
+];
 
 const WinAmp: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [trackName, setTrackName] = useState("RAPTEM - KUJAWIAK WIXA.MP3");
+  const [trackIndex, setTrackIndex] = useState(0);
   const [time, setTime] = useState("00:00");
   const [visualData, setVisualData] = useState<number[]>([]);
+
+  const trackName = tracks[trackIndex];
 
   useEffect(() => {
     let frame: number;
     const update = () => {
       if (isPlaying) {
-        const data = globalWixa.getByteFrequencyData();
+        const data = globalStage.getByteFrequencyData();
         const simplified = Array.from(data.slice(0, 25)).map(v => (v / 255) * 100);
         setVisualData(simplified);
       }
@@ -22,9 +33,25 @@ const WinAmp: React.FC = () => {
   }, [isPlaying]);
 
   const handlePlayToggle = async () => {
-    const active = await globalWixa.toggleWixa();
+    const active = await globalStage.toggleStage();
     setIsPlaying(!!active);
+    if (active) {
+      window.dispatchEvent(new CustomEvent('quest-complete', { detail: 'music' }));
+      const { addXP, updateStat } = usePlayerStore.getState();
+      addXP(50);
+      updateStat('wixaMana', 20); // Initial boost
+    }
   };
+
+  useEffect(() => {
+    let manaInterval: number;
+    if (isPlaying) {
+      manaInterval = setInterval(() => {
+        usePlayerStore.getState().updateStat('wixaMana', 0.5);
+      }, 1000) as unknown as number;
+    }
+    return () => clearInterval(manaInterval);
+  }, [isPlaying]);
 
   return (
     <div className="winamp-container" style={{
@@ -95,12 +122,12 @@ const WinAmp: React.FC = () => {
         {/* Controls */}
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', gap: '2px' }}>
-            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }}>PREV</button>
+            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }} onClick={() => setTrackIndex(prev => (prev - 1 + tracks.length) % tracks.length)}>PREV</button>
             <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }} onClick={handlePlayToggle}>
               {isPlaying ? 'PAUSE' : 'PLAY'}
             </button>
-            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }}>STOP</button>
-            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }}>NEXT</button>
+            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }} onClick={() => setIsPlaying(false)}>STOP</button>
+            <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }} onClick={() => setTrackIndex(prev => (prev + 1) % tracks.length)}>NEXT</button>
           </div>
           <button className="win95-button" style={{ padding: '2px 5px', fontSize: '8px' }}>EJ</button>
         </div>

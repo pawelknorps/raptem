@@ -1,0 +1,41 @@
+<canvas id="cursorCanvas" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;"></canvas>
+
+<script>
+  const canvas = document.getElementById('cursorCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let mouse = { x: 0, y: 0 };
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  
+  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    particles.push({ x: mouse.x, y: mouse.y, life: 1.0 });
+  });
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      // Draw a simple magenta square (simulating a low-res pixel)
+      ctx.fillStyle = `rgba(255, 0, 255, ${p.life})`; 
+      ctx.fillRect(p.x, p.y, 8, 8);
+      
+      p.y += 1; // Fall downward
+      p.life -= 0.02; // Fade out
+    }
+    
+    // Remove dead particles
+    particles = particles.filter(p => p.life > 0);
+    requestAnimationFrame(animate);
+  }
+
+  resizeCanvas();
+  animate();
+</script>

@@ -18,6 +18,8 @@ const SpiritusShield: React.FC = () => {
     } else if (progress >= 100) {
       setScanning(false);
       setStatus('WYKRYTO BRAK FOLKU! ZALECANE: KUJAWIAK v2.1');
+      // Interconnect: Scan result affects Mirek's mood
+      window.dispatchEvent(new CustomEvent('mirek-command', { detail: { command: 'mood-angry' } }));
     }
   }, [scanning, progress]);
 

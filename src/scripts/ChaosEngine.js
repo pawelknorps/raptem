@@ -9,6 +9,19 @@ class ChaosEngine {
   }
 
   init() {
+    this.buffer = "";
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', (e) => {
+        this.buffer = (this.buffer + e.key.toUpperCase()).slice(-10);
+        if (this.buffer.includes("SPEKTAKL") || this.buffer.includes("SPIRYTUS")) {
+          this.level = 1.0;
+          this.buffer = "";
+          this.notify();
+          this.triggerFlash();
+        }
+      });
+    }
+
     setInterval(() => {
       const oldLevel = this.level;
       this.level = Math.max(0, this.level - this.decayRate);

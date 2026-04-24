@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { bazarInventory } from '../../lib/BazarInventory';
 
 const AssetVault: React.FC = () => {
   const [unzipping, setUnzipping] = useState(false);
@@ -20,9 +21,9 @@ const AssetVault: React.FC = () => {
   };
 
   const assets = [
-    { name: 'mirek_final.webp', src: 'assets/1000001791.webp' },
-    { name: 'remiza_interior.webp', src: 'assets/TeatrGospoda_jan26.webp' },
-    { name: 'polonez_drift.gif', src: 'assets/low_poly_polonez.webp' }
+    { id: 'mirek_final', name: 'mirek_final.webp', src: 'assets/1000001791.webp', desc: 'Portret Mistrza Mirka w formacie cyfrowym.' },
+    { id: 'remiza_interior', name: 'remiza_interior.webp', src: 'assets/TeatrGospoda_jan26.webp', desc: 'Wnętrze remizy, gdzie czas płynie wolniej.' },
+    { id: 'polonez_drift', name: 'polonez_drift.gif', src: 'assets/low_poly_polonez.webp', desc: 'Legendarny Polonez w pętli driftingu.' }
   ];
 
   return (
@@ -53,9 +54,25 @@ const AssetVault: React.FC = () => {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
           {assets.map(a => (
-            <div key={a.name} style={{ textAlign: 'center' }}>
-               <img src={a.src} style={{ width: '100%', border: '1px solid #000' }} alt={a.name} />
-               <p style={{ fontSize: '8px', wordBreak: 'break-all' }}>{a.name}</p>
+            <div key={a.name} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
+               <img src={a.src} style={{ width: '100%', border: '1px solid #000', flexGrow: 1, objectFit: 'cover' }} alt={a.name} />
+               <p style={{ fontSize: '8px', wordBreak: 'break-all', margin: '4px 0' }}>{a.name}</p>
+               <button 
+                 className="win95-button" 
+                 style={{ fontSize: '8px', padding: '2px' }}
+                 onClick={() => {
+                   bazarInventory.addItem({
+                     id: a.id,
+                     name: a.name,
+                     type: 'gif',
+                     image: a.src,
+                     description: a.desc
+                   });
+                   alert(`Dodano ${a.name} do plecaka!`);
+                 }}
+               >
+                 ZABIERZ
+               </button>
             </div>
           ))}
           <button 

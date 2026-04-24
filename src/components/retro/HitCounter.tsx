@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
 interface HitCounterProps {
-  initialCount: number;
+  initialCount?: number;
 }
 
-const HitCounter: React.FC<HitCounterProps> = ({ initialCount }) => {
+const HitCounter: React.FC<HitCounterProps> = ({ initialCount = 1337 }) => {
   const [count, setCount] = useState(initialCount);
 
   useEffect(() => {
     // Simulate a hit on load
     const timer = setTimeout(() => {
-      setCount(prev => prev + 1);
+      setCount(prev => (prev || 0) + 1);
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  const digits = count.toString().padStart(6, '0').split('');
+  const digits = (count || 0).toString().padStart(6, '0').split('');
 
   return (
     <div style={{ 

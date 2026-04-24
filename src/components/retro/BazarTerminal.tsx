@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { generateLoreLine } from '../../lib/LoreEngine';
+import { usePlayerStore } from '../../lib/playerStore';
 
 const BazarTerminal: React.FC = () => {
   const [history, setHistory] = useState<string[]>([
@@ -10,13 +12,28 @@ const BazarTerminal: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const commands: Record<string, () => string> = {
-    help: () => "Dostępne komendy: help, cls, whoami, wixa, polonez, spiritus, date",
+    help: () => "Dostępne komendy: help, cls, whoami, teatr, polonez, spiritus, date, lore, manifest",
     cls: () => { setHistory([]); return ""; },
-    whoami: () => "Użytkownik: GOŚĆ_WESELNY_2026",
-    wixa: () => "!!! WIXA DETECTED !!! PODKRĘCAM BASY...",
+    whoami: () => "Użytkownik: WIDZ_TEATRALNY_2026",
+    teatr: () => "!!! SPEKTAKL ROZPOCZĘTY !!! PODNOSZĘ KURTYNĘ...",
     polonez: () => "VROOOOOM! Polonez driftuje po C:\\",
     spiritus: () => "Status: 95% czystości. Zalecane rozcieńczenie.",
-    date: () => new Date().toLocaleString()
+    date: () => new Date().toLocaleString(),
+    lore: () => generateLoreLine(),
+    manifest: () => "Otwieranie MANIFEST_TEATRU.DOC... (Sprawdź okno na pulpicie)",
+    ritual: () => "KALIBRACJA AKORDEONU: KROK 1: Wypełnij miech ciszą przedburzową. KROK 2: Zagraj nutę G. KROK 3: Czekaj na teatr.",
+    mirek: () => "Mirek jest w pętli. Mirek jest Polonezem. Mirek nie wraca.",
+    pks: () => "AUTOBUS RELACJI INOWROCŁAW-WŁOCŁAWEK: STATUS: MOBILNA SCENA LUDOWA.",
+    "1994": () => "INAUGURACJA TEATRU PRĘDKOŚCI 1994: POZIOM EKSPRESJI PRZEKROCZYŁ KRYTYCZNĄ MASĘ. REMIZA STAŁA SIĘ SCENĄ NARODOWĄ.",
+    bazar: () => "BAZAR CENTRALNY: TU SIĘ HANDLUJE ARCHETYPAMI W FORMACIE VHS.",
+    murzynno: () => "MURZYNNO: KOLEBKA RYTMU. TU ZIEMIA DRŻY W TAKCIE SPEKTAKLU.",
+    murzynek: () => "MURZYNEK: BRAMA MIĘDZYWYMIAROWA. STĄD NADAJE RAPTEM.",
+    ps: () => "PID  NAME\n---  ----\n101  Gadu-Mirek\n102  StagePlayer\n103  SpiritusShield\n104  Defragmentator",
+    kill: () => "Błąd: Brak uprawnień reżysera (Pan Janek musi zatwierdzić).",
+    defrag: () => {
+      window.dispatchEvent(new CustomEvent('open-window', { detail: 'defrag' }));
+      return "Uruchamiam Defragmentator... Przesuwanie bloków pamięci ludowej.";
+    }
   };
 
   const handleCommand = (e: React.FormEvent) => {
@@ -25,6 +42,14 @@ const BazarTerminal: React.FC = () => {
     let response = "";
 
     if (cmd) {
+      const { addXP, updateStat } = usePlayerStore.getState();
+      addXP(5);
+      updateStat('chaosAffinity', 0.5);
+
+      if (cmd === 'spiritus' || cmd === 'spirytus') {
+        window.dispatchEvent(new CustomEvent('quest-complete', { detail: 'terminal' }));
+        addXP(200);
+      }
       if (commands[cmd]) {
         response = commands[cmd]();
       } else {

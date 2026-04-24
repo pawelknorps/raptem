@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './AccordionGame.css';
+import { usePlayerStore } from '../../lib/playerStore';
 
 type TuningType = 'STANDARD' | 'KUJAWY' | 'BROKEN';
 type Register = 'MASTER' | 'VIOLIN' | 'BASSON' | 'MUSETTE';
@@ -18,7 +19,11 @@ const AccordionGame: React.FC = () => {
   const [condition, setCondition] = useState(0.4); // Default to low condition
   const [bellows, setBellows] = useState(0.6);
   const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
+  const [songStep, setSongStep] = useState<number | null>(null);
+  const [songSuccess, setSongSuccess] = useState(false);
+  const [notesPlayed, setNotesPlayed] = useState(0);
   
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const voicesRef = useRef<Map<string, Voice>>(new Map());
   const masterGainRef = useRef<GainNode | null>(null);
@@ -96,7 +101,40 @@ const AccordionGame: React.FC = () => {
       const airVol = (1 - condition) * 0.05 + (bellows * 0.02);
       airGainRef.current.gain.setTargetAtTime(airVol, ctx.currentTime, 0.1);
     }
+
+    // Canvas Visualizer Loop
+    if (canvasRef.current && masterGainRef.current && audioCtxRef.current) {
+      const ctx = audioCtxRef.current;
+      const canvas = canvasRef.current;
+      const canvasCtx = canvas.getContext('2d');
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 64;
+      masterGainRef.current.connect(analyser);
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      const draw = () => {
+        if (!canvasCtx) return;
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        canvasCtx.fillStyle = '#040';
+        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i] / 4;
+          canvasCtx.fillStyle = `rgb(0, ${barHeight * 4}, 0)`;
+          canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
+        }
+      };
+      draw();
+    }
   }, [bellows, condition]);
+
+  const SONG_SEQUENCE = ['A', 'S', 'D', 'A', 'S'];
 
   const getFreq = (index: number) => {
     let freq = BASE_FREQS[index];
@@ -114,6 +152,39 @@ const AccordionGame: React.FC = () => {
   const startNote = (key: string, index: number) => {
     initAudio();
     if (!audioCtxRef.current || !filterRef.current || voicesRef.current.has(key)) return;
+
+    // RPG Integration: Reward for playing notes
+    const { addXP, updateStat } = usePlayerStore.getState();
+    addXP(2);
+    updateStat('folkPurity', 0.1);
+    
+    setNotesPlayed(prev => {
+       const next = prev + 1;
+       if (next === 5) {
+          window.dispatchEvent(new CustomEvent('quest-complete', { detail: 'accordion' }));
+          addXP(100); // Bonus for first few notes
+       }
+       return next;
+    });
+
+    // Tutorial Logic
+    if (songStep !== null) {
+       if (key === SONG_SEQUENCE[songStep]) {
+          if (songStep === SONG_SEQUENCE.length - 1) {
+             setSongSuccess(true);
+             setSongStep(null);
+             window.dispatchEvent(new CustomEvent('mirek-command', { detail: { command: 'unlock-gold' } }));
+          } else {
+             setSongStep(songStep + 1);
+          }
+       } else {
+          setSongStep(0); // Reset on error
+       }
+    }
+
+    if (Math.random() > 0.95) {
+       window.dispatchEvent(new CustomEvent('mirek-command', { detail: { command: 'glitch-visual' } }));
+    }
 
     const ctx = audioCtxRef.current;
     const freq = getFreq(index);
@@ -224,9 +295,15 @@ const AccordionGame: React.FC = () => {
     <div className={`accordion-game-container win95-inset ${condition < 0.5 ? 'high-chaos-vibrate' : ''}`}>
       <div className="accordion-header">
         <span>AKORDEON MIRKA v1.3 (BAZAR-MASTER)</span>
+        <button className="win95-button" style={{ fontSize: '9px', padding: '1px 5px' }} onClick={() => setSongStep(0)}>NAUKA GRY</button>
         <div className="win95-close-btn">×</div>
       </div>
       
+      {songStep !== null && (
+        <div style={{ background: '#ff0', color: '#000', padding: '2px 10px', fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>
+          NASTĘPNA NUTA: {SONG_SEQUENCE[songStep]} {songSuccess ? '!!! SUKCES !!!' : ''}
+        </div>
+      )}
       <div className="register-bank">
         {(['MASTER', 'VIOLIN', 'BASSON', 'MUSETTE'] as Register[]).map(r => (
           <button 
@@ -298,8 +375,9 @@ const AccordionGame: React.FC = () => {
         </div>
       </div>
 
-      <div className="accordion-footer-bar">
-        <div className="lcd-display blink">
+      <div className="accordion-footer-bar" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <canvas ref={canvasRef} width="100" height="20" style={{ border: '1px solid #0f0', background: '#000' }}></canvas>
+        <div className="lcd-display blink" style={{ flexGrow: 1 }}>
           [ {register} ] | [ {tuning} ] | ERROR_CODE: {Math.floor((1 - condition) * 999)}
         </div>
       </div>

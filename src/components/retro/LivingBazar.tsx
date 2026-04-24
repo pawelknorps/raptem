@@ -24,7 +24,7 @@ const LivingBazar: React.FC = () => {
       const rand = Math.random();
       
       // Spawn popups more frequently with chaos
-      if (rand < (0.05 + chaosLevel * 0.2)) {
+      if (rand < (0.02 + chaosLevel * 0.1)) {
         setPopups(prev => [...prev, Date.now()]);
       }
 

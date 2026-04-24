@@ -12,24 +12,35 @@ interface Village {
   gallery?: string[];
 }
 
+interface Anomaly {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  type: 'CHAOS' | 'TRADITION';
+  duration: number; // in seconds
+}
+
 const VILLAGES: Village[] = [
-  { id: 'inowroclaw', name: 'INOWROCŁAW', x: 80, y: 70, description: 'Tu Mirek kupił swój pierwszy akordeon na bazarze. Prawdziwa kolebka wixy.', image: 'assets/1000001787.webp', gallery: ['assets/1000001787.webp', 'assets/accordion.webp'] },
+  { id: 'inowroclaw', name: 'INOWROCŁAW', x: 80, y: 70, description: 'Tu Mirek kupił swój pierwszy akordeon na bazarze. Prawdziwa folkowa kolebka.', image: 'assets/1000001787.webp', gallery: ['assets/1000001787.webp', 'assets/accordion.webp'] },
   { id: 'kruszwica', name: 'KRUSZWICA', x: 85, y: 80, description: 'Koncert pod Mysią Wieżą. Szczury uciekały z jeziora Gopło tak szybko, że aż fale robiły.', image: 'assets/1000001815.webp', gallery: ['assets/1000001815.webp', 'assets/basy.webp'] },
   { id: 'kowal', name: 'KOWAL', x: 110, y: 100, description: 'Wielka feta w remizie. Sołtys osobiście otwierał pierwszą kasetę RAPTEM.', image: 'assets/TeatrGospoda_jan26.webp', gallery: ['assets/TeatrGospoda_jan26.webp', 'assets/soltys_placeholder.webp'] },
   { id: 'konin', name: 'KONIN', x: 75, y: 100, description: 'Przystanek PKS Konin - tu powstał teledysk do "Oberka". Betonowe wiaty drżały w posadach.', image: 'assets/1000002066.webp', gallery: ['assets/1000002066.webp', 'assets/pks_stop.webp'] },
-  { id: 'torun', name: 'TORUŃ', x: 92, y: 60, description: 'Pierniki i wixa. Graliśmy pod pomnikiem Kopernika, on się nie ruszył, ale my tak.', image: 'assets/1000001791.webp', gallery: ['assets/1000001791.webp', 'assets/Screenshot_20260423-171126~3.webp'] },
+  { id: 'torun', name: 'TORUŃ', x: 92, y: 60, description: 'Pierniki i teatr. Graliśmy pod pomnikiem Kopernika, on się nie ruszył, ale my tak.', image: 'assets/1000001791.webp', gallery: ['assets/1000001791.webp', 'assets/Screenshot_20260423-171126~3.webp'] },
   { id: 'poznan', name: 'POZNAŃ', x: 60, y: 80, description: 'Koziołki trykały się w rytm techno-mazurka na Starym Rynku.', image: 'assets/1000001851.webp', gallery: ['assets/1000001851.webp', 'assets/6d11a141-15f4-40c6-91d3-1222905371ed.webp'] },
   { id: 'wroclaw', name: 'WROCŁAW', x: 50, y: 110, description: 'Krasnale uciekały przed nagłośnieniem RAPTEM. Prawdziwy breslau-wave.', image: 'assets/1000001927.webp', gallery: ['assets/1000001927.webp', 'assets/spirytus.webp'] },
   { id: 'berlin', name: 'BERLIN', x: 20, y: 80, description: 'Wielki koncert pod Bramą Brandenburską. Niemcy nie wiedzieli co się dzieje, ale tupali nóżką.', image: 'assets/1000002334.webp', gallery: ['assets/1000002334.webp', 'assets/low_poly_polonez.webp'] },
   { id: 'szwecja', name: 'SZWECJA', x: 60, y: 20, description: 'Prom Świnoujście-Ystad. Graliśmy "Oberka" na górnym pokładzie, mewy ogłuchły od basu.', image: 'assets/1000003330.webp', gallery: ['assets/1000003330.webp', 'assets/dancer_pixel.webp'] },
-  { id: 'gniewkowo', name: 'GNIEWKOWO', x: 88, y: 65, description: 'Serce Kujaw. Tu basy niosą się aż po sam Toruń. Miasto zakochanych w wixie.', image: 'assets/1000001788.webp', gallery: ['assets/1000001788.webp', 'assets/polonez.webp'] },
+  { id: 'gniewkowo', name: 'GNIEWKOWO', x: 88, y: 65, description: 'Serce Kujaw. Tu basy niosą się aż po sam Toruń. Miasto zakochanych w spektaklu.', image: 'assets/1000001788.webp', gallery: ['assets/1000001788.webp', 'assets/polonez.webp'] },
   { id: 'murzynno', name: 'MURZYNNO', x: 86, y: 66, description: 'Legendarny przystanek PKS. Tu Mirek zgubił kluczyk od bagażnika Poloneza.', image: 'assets/pks_stop.webp', gallery: ['assets/pks_stop.webp', 'assets/IMG_20260125_110507892.webp'] },
-  { id: 'murzynko', name: 'MURZYNKO', x: 87, y: 67, description: 'Mały brat Murzynna. Obok, ale wixa dwa razy większa. Sołtys płakał jak słuchał.', image: 'assets/soltys_placeholder.webp' },
+  { id: 'murzynko', name: 'MURZYNKO', x: 87, y: 67, description: 'Mały brat Murzynna. Obok, ale teatr dwa razy większa. Sołtys płakał jak słuchał.', image: 'assets/soltys_placeholder.webp' },
   { id: 'wegajty', name: 'WĘGAJTY', x: 130, y: 50, description: 'Kultowe spotkanie z teatrem wiejskim. Polonez wjechał na podwórko w tumanach kurzu.', image: 'assets/TeatrGospoda_jan26.webp' },
-  { id: 'taurku', name: 'TAURKU (TURKU)', x: 100, y: 10, description: 'Północny bastion wixy. Zimno, ale parkiet gorący. Finlandia oszalała.', image: 'assets/1000001787.webp' },
+  { id: 'taurku', name: 'TAURKU (TURKU)', x: 100, y: 10, description: 'Północny bastion spektaklu. Zimno, ale parkiet gorący. Finlandia oszalała.', image: 'assets/1000001787.webp' },
   { id: 'brodnica', name: 'BRODNICA', x: 115, y: 55, description: 'Brama do Mazur. Ostatni bastion przed wielką wodą. Jeziora zadrżały.', image: 'assets/1000001815.webp' },
   { id: 'hidden_spirytus', name: 'VAULT SPIRYTUSU', x: 140, y: 80, description: 'Ściśle tajne laboratorium. Tu spirytus miesza się z dymem z wytwornicy.', image: 'assets/spirytus.webp', gallery: ['assets/spirytus.webp', 'assets/6d11a141-15f4-40c6-91d3-1222905371ed.webp'] },
   { id: 'polonez_spot', name: 'POLONEZ DRIFT AREA', x: 40, y: 50, description: 'Miejsce gdzie opony palą się w rytm kujawiaka. Mirek tu trenuje przed każdym weselem.', image: 'assets/polonez_3d_render.webp', gallery: ['assets/polonez_3d_render.webp', 'assets/low_poly_polonez.webp', 'assets/polonez.webp'] },
+  { id: 'radio_babilon', name: 'RADIO BABILON', x: 125, y: 40, description: 'Tajemniczy maszt radiowy w Reszkach. Nadaje lore Raptem na falach ultra-krótkich.', image: 'assets/pks_stop.webp' },
+  { id: 'teatr_rozpierdol', name: 'TEATR ROZPIERDOL', x: 110, y: 115, description: 'Podziemna scena w Kowalu. Tu nie ma scenariusza, jest tylko wixa i ogień.', image: 'assets/TeatrGospoda_jan26.webp' },
 ];
 
 const KujawyMap: React.FC = () => {
@@ -39,6 +50,7 @@ const KujawyMap: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [modalPos, setModalPos] = useState({ x: 0, y: 0 });
+  const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
 
   const handleVillageClick = (v: Village) => {
     setSelectedVillage(v);
@@ -64,6 +76,33 @@ const KujawyMap: React.FC = () => {
     });
   };
 
+  const handleAnomalyClick = (a: Anomaly) => {
+    SoundManager.play('chaos_glitch');
+    window.dispatchEvent(new CustomEvent('quest-complete', { detail: 'anomaly' }));
+    setAnomalies(prev => prev.filter(x => x.id !== a.id));
+    // Reward player (this would usually go through playerStore)
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        const newAnomaly: Anomaly = {
+          id: Math.random().toString(),
+          name: Math.random() > 0.5 ? 'WYCIEK CHAOSU' : 'PROMIENIOWANIE FOLKU',
+          x: 20 + Math.random() * 120,
+          y: 50 + Math.random() * 60,
+          type: Math.random() > 0.5 ? 'CHAOS' : 'TRADITION',
+          duration: 30
+        };
+        setAnomalies(prev => [...prev, newAnomaly]);
+      }
+      
+      setAnomalies(prev => prev.map(a => ({ ...a, duration: a.duration - 1 })).filter(a => a.duration > 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging) {
@@ -88,7 +127,7 @@ const KujawyMap: React.FC = () => {
   return (
     <div className="kujawy-map-container">
       <div className="win95-window-header">
-        <span>Mapa_Wixy_Global_Edition.exe</span>
+        <span>Mapa_Regionu_Global_Edition.exe</span>
         <div className="header-controls">
           <button className="win95-btn-small">_</button>
           <button className="win95-btn-small">□</button>
@@ -152,6 +191,17 @@ const KujawyMap: React.FC = () => {
               <text x={v.x + 2} y={v.y + 1} fontSize="2.5" fill="#fff" className="marker-label">{v.name}</text>
             </g>
           ))}
+
+          {anomalies.map((a) => (
+            <g 
+              key={a.id} 
+              className={`map-anomaly ${a.type.toLowerCase()}`}
+              onClick={() => handleAnomalyClick(a)}
+            >
+              <circle cx={a.x} cy={a.y} r="2" fill={a.type === 'CHAOS' ? '#f00' : '#fff'} className="anomaly-pulse" />
+              <text x={a.x + 3} y={a.y + 1} fontSize="2" fill="#fff" className="anomaly-label">{a.name} ({a.duration}s)</text>
+            </g>
+          ))}
         </svg>
 
         <div className="map-status-bar">
@@ -200,7 +250,7 @@ const KujawyMap: React.FC = () => {
       </div>
 
       <div className="map-footer">
-        RAPTEM MAPA WIXY v2.0 - © 1998-2026 KUJAWIAK SYSTEMS
+        RAPTEM MAPA REGIONU v2.0 - © 1998-2026 KUJAWIAK SYSTEMS
       </div>
     </div>
   );

@@ -1,29 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { getLoreSnippet, vibeManager } from '../../lib/LoreEngine';
+import { useQuestStore } from '../../lib/QuestEngine';
 
 const MirekHelper: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [tip, setTip] = useState('');
+  const { getActiveQuest } = useQuestStore();
   
   const tips = [
     "Może by tak kujawiaka?",
     "System stabilny (na razie).",
-    "Wykryto wysoki poziom spirytusu w systemie.",
+    "Wykryto wysoki poziom ekspresji w systemie.",
     "Czy wiesz, że Mirek gra na basach lepiej niż Ty?",
     "Zalecane: natychmiastowe uderzenie w piksla.",
-    "BŁĄD: Zbyt mała ilość oberków na minutę.",
-    "UWAŻAJ! Idzie wixa!"
+    "BŁĄD: Zbyt mała ilość inscenizacji na minutę.",
+    "UWAŻAJ! Idzie spektakl!"
   ];
 
   useEffect(() => {
     const trigger = () => {
-      if (Math.random() < 0.3) {
-        setTip(tips[Math.floor(Math.random() * tips.length)]);
+      if (Math.random() < 0.4) {
+        const activeQuest = getActiveQuest();
+        const currentVibe = vibeManager.getVibe();
+        
+        if (activeQuest && Math.random() < 0.5) {
+          setTip(`EJ! Zrób to: ${activeQuest.title}`);
+        } else if (Math.random() < 0.6) {
+          setTip(getLoreSnippet(currentVibe));
+        } else {
+          setTip(tips[Math.floor(Math.random() * tips.length)]);
+        }
+        
         setVisible(true);
-        setTimeout(() => setVisible(false), 5000);
+        setTimeout(() => setVisible(false), 8000);
       }
     };
 
-    const interval = setInterval(trigger, 15000);
+    const interval = setInterval(trigger, 10000);
     return () => clearInterval(interval);
   }, []);
 

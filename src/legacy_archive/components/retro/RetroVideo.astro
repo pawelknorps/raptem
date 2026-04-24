@@ -1,0 +1,77 @@
+---
+interface Props {
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+---
+
+<div class="retro-video-window">
+  <div class="window-header">
+    <span class="window-title">{title}</span>
+    <div class="window-buttons">
+      <button class="win95-btn-small">_</button>
+      <button class="win95-btn-small">□</button>
+      <button class="win95-btn-small">X</button>
+    </div>
+  </div>
+  <div class="window-content">
+    <video controls width="100%" poster="assets/construction.gif">
+      <source src={src} type="video/mp4" />
+      Twoja przeglądarka nie obsługuje wideo. Zainstaluj Internet Explorer 6.0!
+    </video>
+  </div>
+</div>
+
+<style>
+  .retro-video-window {
+    background: var(--win-grey);
+    border: 3px outset var(--win-white);
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 380px;
+    flex-shrink: 1;
+  }
+
+  .window-header {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .window-buttons {
+    display: flex;
+    gap: 2px;
+  }
+
+  .win95-btn-small {
+    width: 16px;
+    height: 14px;
+    background: var(--win-grey);
+    border: 1px outset #fff;
+    font-size: 9px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .window-content {
+    border: 2px inset #fff;
+    margin: 5px;
+    background: #000;
+  }
+
+  video {
+    display: block;
+    filter: sepia(0.2) contrast(1.2); /* Retro TV filter */
+  }
+</style>

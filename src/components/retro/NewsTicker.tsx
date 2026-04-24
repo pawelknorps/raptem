@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { generateLoreLine, type Vibe } from '../../lib/LoreEngine';
+
+const VIBES: Vibe[] = ['DEFAULT', 'KUJAWIAK_PHOTO', 'POLISH_MOUSE', 'VAPORWAVE', 'BAZAR_WAVE', 'POLAND_WAVE'];
 
 const NewsTicker: React.FC = () => {
+  const [lore, setLore] = useState("");
+
+  useEffect(() => {
+    const updateLore = () => {
+      const randomVibe = VIBES[Math.floor(Math.random() * VIBES.length)];
+      setLore(generateLoreLine(randomVibe));
+    };
+    updateLore();
+    const interval = setInterval(updateLore, 10000); // New lore every 10 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div style={{
       position: 'fixed',
-      top: '18px', // Just below the ChaosHeader
+      top: '18px',
       left: 0,
       width: '100%',
       height: '24px',
@@ -30,7 +45,7 @@ const NewsTicker: React.FC = () => {
       </div>
       <div style={{ flexGrow: 1, overflow: 'hidden', position: 'relative' }}>
         <marquee style={{ fontSize: '12px', color: '#000', fontWeight: 'bold' }}>
-          +++ PILNE: PANE JANEK ZNALAZŁ NOWĄ KASETĘ POD SIEDZENIEM POLONEZA +++ POGODA: NA KUJAWACH PRZEWIDYWANA WIXA I OPADY SPIRYTUSU +++ NOTOWANIA: BONY DO REMIZY W GÓRĘ O 15% +++
+          +++ PILNE: {lore} +++ POGODA: NA KUJAWACH PRZEWIDYWANE PRZEBUDZENIE TRADYCJI I OPADY FOLKLORU +++ BILETY: NA SPEKTAKL W KOWALU WYPRZEDANE +++
         </marquee>
       </div>
     </div>

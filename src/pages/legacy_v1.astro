@@ -1,0 +1,843 @@
+---
+import '../legacy_archive/styles/bazar-wave.css';
+import '../legacy_archive/styles/workbench.css';
+import '../legacy_archive/components/retro/WordArt.css';
+import Marquee from '../legacy_archive/components/retro/Marquee.astro';
+import StagePlayer from '../legacy_archive/components/retro/StagePlayer.tsx';
+import HitCounter from '../legacy_archive/components/retro/HitCounter.tsx';
+import VaporwaveTroope from '../legacy_archive/components/retro/VaporwaveTroope.tsx';
+import BootSequence from '../legacy_archive/components/retro/BootSequence.astro';
+import RetroVideo from '../legacy_archive/components/retro/RetroVideo.astro';
+import Gallery from '../legacy_archive/components/retro/Gallery.tsx';
+import KujawiakWinMenuItem from '../legacy_archive/components/retro/KujawiakWinMenuItem.astro';
+import Guestbook from '../legacy_archive/components/retro/Guestbook.tsx';
+import WinAmp from '../legacy_archive/components/retro/WinAmp/WinAmp.tsx';
+import KujawyMap from '../legacy_archive/components/retro/KujawyMap.tsx';
+import DraggableWindow from '../legacy_archive/components/retro/DraggableWindow.tsx';
+import MerchWizard from '../legacy_archive/components/retro/MerchWizard.tsx';
+import AccordionGame from '../legacy_archive/components/retro/AccordionGame.tsx';
+import LivingBazar from '../legacy_archive/components/retro/LivingBazar.tsx';
+import Taskbar from '../legacy_archive/components/retro/Taskbar.tsx';
+import MirekHelper from '../legacy_archive/components/retro/MirekHelper.tsx';
+import PolonezBrowser from '../legacy_archive/components/retro/PolonezBrowser.tsx';
+import BazarSettings from '../legacy_archive/components/retro/BazarSettings.tsx';
+import SpiritusShield from '../legacy_archive/components/retro/SpiritusShield.tsx';
+import ChaosHeader from '../legacy_archive/components/retro/ChaosHeader.tsx';
+import DesktopSurface from '../legacy_archive/components/retro/DesktopSurface.tsx';
+import SystemLogs from '../legacy_archive/components/retro/SystemLogs.tsx';
+import AssetVault from '../legacy_archive/components/retro/AssetVault.tsx';
+import SystemWarnings from '../legacy_archive/components/retro/SystemWarnings.tsx';
+import BazarTerminal from '../legacy_archive/components/retro/BazarTerminal.tsx';
+import OnboardingWizard from '../legacy_archive/components/retro/OnboardingWizard.tsx';
+import NewsTicker from '../legacy_archive/components/retro/NewsTicker.tsx';
+import StickerBomb from '../legacy_archive/components/retro/StickerBomb.tsx';
+import ContextMenu from '../legacy_archive/components/retro/ContextMenu.tsx';
+import BazarScreensaver from '../legacy_archive/components/retro/BazarScreensaver.tsx';
+import MerchListing from '../legacy_archive/components/retro/MerchListing.tsx';
+import MirekChat from '../legacy_archive/components/retro/MirekChat.tsx';
+import RaptemLore from '../legacy_archive/components/retro/RaptemLore.tsx';
+---
+
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content={Astro.generator} />
+    <base href={import.meta.env.BASE_URL} />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <title>RAPTEM - Oficjalna Strona Kujawskiego Teatru</title>
+  </head>
+  <body>
+    <ChaosHeader client:load />
+    <NewsTicker client:load />
+    <DesktopSurface client:load />
+    <ContextMenu client:load />
+    <BazarScreensaver client:load />
+    <StickerBomb client:load count={30} />
+    <SystemWarnings client:load />
+    <BootSequence />
+    
+    <canvas id="cursor-canvas"></canvas>
+    <canvas id="chaos-particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas>
+
+    <!-- BSOD Overlay Easter Egg -->
+    <div id="bsod-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0000aa; color: #fff; z-index: 100000; padding: 50px; font-family: 'Courier New', monospace;">
+      <p style="background: #fff; color: #0000aa; display: inline-block; padding: 0 10px;">Windows</p>
+      <p style="margin-top: 20px;">A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00010E36. The current application will be terminated.</p>
+      <p style="margin-top: 20px;">* Press any key to terminate the current application.<br/>* Press CTRL+ALT+DEL again to restart your computer. You will lose any unsaved information in all applications.</p>
+      <p style="margin-top: 20px; text-align: center;">Press any key to continue _</p>
+    </div>
+
+    <!-- Floating Background Decor / Texture -->
+    <div class="background-texture"></div>
+    <LivingBazar client:load />
+
+    <div class="app-container">
+      <header class="header-frame">
+        <div style="display: flex; align-items: center; gap: 20px; width: 100%;">
+          <img src="assets/construction.gif" alt="W budowie" style="height: 50px;" />
+          <h1 class="wordart-3dblue" style="font-size: 3rem;">ZESPÓŁ RAPTEM</h1>
+          <img src="assets/new.gif" alt="Nowość" style="height: 30px;" />
+          <button id="sound-toggle" class="win95-button" style="margin-left: auto; font-size: 10px; padding: 2px 5px;">🔊 DŹWIĘK: OFF</button>
+        </div>
+      </header>
+
+      <nav class="nav-frame">
+        <h2 style="font-size: 1rem; background: var(--win-black); color: var(--win-white); padding: 2px 5px; margin-bottom: 10px;">Menu Główne</h2>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <KujawiakWinMenuItem href="#" label="C:\\" title="PULPIT" icon="assets/polonez.webp" />
+          <KujawiakWinMenuItem href="#muzyka" label="APP" title="WINAMP" icon="assets/accordion.webp" />
+          <KujawiakWinMenuItem href="#terminal" label="APP" title="TERMINAL" icon="assets/polonez.webp" />
+          <KujawiakWinMenuItem href="#muzyka" label="DIR" title="MUZYKA" icon="assets/accordion.webp" />
+          <KujawiakWinMenuItem href="#video" label="DIR" title="WIDEO" icon="assets/construction.gif" />
+          
+          <div style="padding: 10px 0; border-top: 2px inset #fff; margin-top: 5px; font-size: 11px;">
+            <a href="#galeria">📁 GALERIA</a><br/>
+            <a href="#zespol">📁 O NAS</a><br/>
+            <a href="#kontakt">📁 KONTAKT</a><br/>
+            <a href="#sklep">💰 SKLEPIK</a>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; border: 2px inset #fff; padding: 10px; background: #eee;">
+          <p style="font-size: 12px; font-weight: bold;">Licznik hitów:</p>
+          <HitCounter client:load initialCount={142823} />
+        </div>
+
+        <!-- Blinking Banner -->
+        <div class="blinking-ad blink" style="margin-top: 20px; border: 3px double red; padding: 10px; background: yellow; color: red; font-weight: bold; text-align: center; cursor: pointer;">
+          !!! KUP KASETE !!!<br/>
+          PŁATNE W NATURZE
+        </div>
+
+        <div style="margin-top: 20px; border: 1px dashed #000; padding: 5px; position: relative;">
+          <img src="assets/1000001791.webp" style="width: 100%; filter: sepia(0.5);" alt="Sidebar Image" id="sidebar-mirek" />
+          <div class="tooltip">KLIKNIJ MIRKA!</div>
+        </div>
+
+        <!-- Extra Nav Data -->
+        <div class="nav-stats" style="margin-top: 20px; font-size: 9px; font-family: var(--font-mono); color: #444;">
+          CPU_TEMP: <span class="blink" style="color: red;">88°C (WRZĄTEK)</span><br/>
+          SPIRIT_LEVEL: <span style="color: blue;">100%</span><br/>
+          BAZAR_READY: <span class="blink" style="color: green;">YES</span><br/>
+          POLONEZ_STATUS: DRIFTING<br/>
+          <img src="assets/new.gif" style="height: 12px;" /> TOTAL_GIGS: 420
+        </div>
+        
+        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+          <img src="assets/construction.gif" style="width: 100%;" />
+          <img src="assets/new.gif" style="width: 100%;" />
+          <img src="assets/spirytus.webp" style="width: 100%; filter: grayscale(1);" />
+          <img src="assets/pks_stop.webp" style="width: 100%;" />
+        </div>
+
+        <div style="margin-top: auto; text-align: center; padding-bottom: 30px;">
+          <img src="assets/spirytus.webp" alt="Sponsor" id="spirytus-img" style="width: 40px; filter: drop-shadow(0 0 5px cyan); cursor: pointer;" />
+          <p style="font-size: 9px; margin-top: 5px;">Powered by Spirytus™</p>
+        </div>
+      </nav>
+
+      <main class="main-frame">
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+          <div class="desktop-icon" id="icon-computer">
+            <img src="assets/polonez.webp" alt="Computer" />
+            <span>Mój Polonez</span>
+          </div>
+          <div class="desktop-icon" id="icon-trash">
+            <img src="assets/spirytus.webp" alt="Trash" style="filter: grayscale(1);" />
+            <span>Kosz (Pełny)</span>
+          </div>
+          <div class="desktop-icon" id="icon-network">
+             <img src="assets/pks_stop.webp" alt="Network" />
+             <span>Otoczenie Wixy</span>
+          </div>
+          <div class="desktop-icon" id="icon-settings">
+             <img src="assets/spirytus.webp" alt="Settings" style="filter: hue-rotate(90deg);" />
+             <span>Ustawienia</span>
+          </div>
+          <div class="desktop-icon" id="icon-antivirus">
+             <img src="assets/spirytus.webp" alt="Antivirus" style="filter: saturate(0) brightness(1.5);" />
+             <span>Antywirus</span>
+          </div>
+          <div class="desktop-icon" id="icon-logs">
+             <img src="assets/construction.gif" alt="Logs" />
+             <span>Logi Systemu</span>
+          </div>
+          <div class="desktop-icon" id="icon-vault">
+             <img src="assets/new.gif" alt="Vault" />
+             <span>Archiwum ZIP</span>
+          </div>
+          <div class="desktop-icon" id="icon-terminal">
+             <img src="assets/polonez.webp" alt="Terminal" style="filter: contrast(2) grayscale(1);" />
+             <span>Terminal</span>
+          </div>
+          <div class="desktop-icon" id="icon-help">
+             <img src="assets/construction.gif" alt="Help" style="filter: hue-rotate(180deg);" />
+             <span>Instrukcja</span>
+          </div>
+          <div class="desktop-icon" id="icon-merch">
+             <img src="assets/spirytus.webp" alt="Merch" style="filter: hue-rotate(300deg) saturate(2);" />
+             <span>Kup Kasetę!</span>
+          </div>
+          <div class="desktop-icon" id="icon-chat">
+             <img src="assets/1000001791.webp" alt="Chat" style="border-radius: 50%; filter: grayscale(1);" />
+             <span>Gadu-Mirek</span>
+          </div>
+          <div class="desktop-icon" id="icon-lore">
+             <img src="assets/construction.gif" alt="Lore" style="filter: hue-rotate(270deg) contrast(2);" />
+             <span>MANIFEST.EXE</span>
+          </div>
+        </div>
+
+        <!-- Floating Stickers Everywhere -->
+        <img src="assets/dancer_pixel.webp" class="sticker" style="top: 15%; left: 2%;" />
+        <img src="assets/spirytus.webp" class="sticker" style="top: 40%; right: 5%; transform: rotate(15deg);" />
+        <img src="assets/accordion.webp" class="sticker" style="bottom: 10%; left: 10%; width: 50px;" />
+        <img src="assets/new.gif" class="sticker" style="top: 5%; right: 20%;" />
+        <img src="assets/construction.gif" class="sticker" style="bottom: 5%; right: 5%;" />
+        <img src="assets/basy.webp" class="sticker" style="top: 60%; left: 5%; width: 40px;" />
+
+        <section id="welcome" class="main-content-section">
+          <div class="section-folder-tab">📁 C:\PULPIT\WITAMY</div>
+          <h2 class="wordart-rainbow" style="font-size: 2.5rem; display: block; margin-bottom: 15px;">WITAMY NA BAZARZE!</h2>
+          <div style="border: 2px inset #fff; padding: 20px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); position: relative;">
+            <div style="position: absolute; top: -10px; right: -10px;">
+              <img src="assets/new.gif" alt="New" style="height: 40px;" />
+            </div>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+              <div>
+                <p>Jesteśmy zespołem <strong>Raptem</strong>. Gramy kujawiaki, oberki i folk tak głęboki, że aż buty spadają. Nasza muzyka to połączenie tradycji z bazarową energią lat 90.</p>
+                <div style="margin: 20px 0; border: 1px solid #fff; padding: 5px; background: #000; display: flex; gap: 5px; overflow-x: auto;">
+                  <img src="assets/1000001787.webp" style="height: 60px;" />
+                  <img src="assets/1000001788.webp" style="height: 60px;" />
+                  <img src="assets/1000001791.webp" style="height: 60px;" />
+                  <img src="assets/1000001815.webp" style="height: 60px;" />
+                </div>
+              </div>
+              <div class="win95-inset" style="padding: 10px; font-size: 10px; background: #c0c0c0; color: #000;">
+                <h4 style="margin: 0 0 5px 0;">SYSTEM INFO:</h4>
+                <p>STATUS: ONLINE</p>
+                <p>BAND_MEMBERS: 5</p>
+                <p>SPIRIT_LVL: 100%</p>
+                <p>REGION: KUJAWY</p>
+                <img src="assets/dancer_pixel.webp" style="width: 40px; float: right;" />
+              </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin: 30px 0;">
+              <div id="polonez-container" style="cursor: pointer;">
+                <VaporwaveTroope 
+                  client:load
+                  assetUrl="assets/low_poly_polonez.webp" 
+                  alt="FSO Polonez" 
+                  size={180} 
+                  glowColor="cyan" 
+                />
+              </div>
+              <VaporwaveTroope 
+                client:load
+                assetUrl="assets/pks_stop.webp" 
+                alt="Przystanek PKS" 
+                size={180} 
+                glowColor="magenta" 
+              />
+            </div>
+
+            <StagePlayer client:load audioUrl="assets/kujawiak_track.mp3" />
+
+            <div class="mosaic-banner" style="margin-top: 20px; display: flex; gap: 2px; height: 40px; overflow: hidden;">
+              {Array.from({length: 12}).map((_, i) => (
+                <img key={i} src={`assets/100000${1787 + (i % 5)}.webp`} style="flex: 1; object-fit: cover; border: 1px solid #fff;" />
+              ))}
+            </div>
+          </div>
+          
+          <div style="margin-top: 20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
+            <img src="assets/TeatrGospoda_jan26.webp" style="width: 70%; border: 10px double #c0c0c0; box-shadow: 10px 10px 0 #000;" alt="Main Band" />
+            <div style="width: 20%; display: flex; flex-direction: column; gap: 10px;">
+               <img src="assets/1000001788.webp" style="width: 100%; border: 3px solid #fff;" alt="Photo" />
+               <img src="assets/1000001787.webp" style="width: 100%; border: 3px solid #fff;" alt="Photo" />
+            </div>
+          </div>
+        </section>
+
+        <section id="muzyka" class="main-content-section" style="margin-top: 20px;">
+          <div class="section-folder-tab">📁 C:\MUZYKA\AUDIO_TRACKS</div>
+          <h2 class="wordart-3dred" style="font-size: 2rem;">AUDIO / MUZYKA</h2>
+          <div style="display: grid; grid-template-columns: 1fr auto; gap: 40px; margin-top: 20px; align-items: start;">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div style="background: #eee; padding: 10px; border: 2px outset #fff; max-width: 300px; position: relative;">
+                <img src="assets/basy.webp" style="width: 100%;" alt="Basy" />
+                <img src="assets/spirytus.webp" style="position: absolute; bottom: 5px; right: 5px; width: 30px; opacity: 0.3;" alt="Spirit" />
+                <p style="font-size: 11px; text-align: center; color: #444; margin-top: 10px;">Instrumentarium Kujawiak Engine</p>
+              </div>
+              <div class="win95-inset" style="margin-top: 20px; background: #c0c0c0; padding: 10px;">
+                <h3 style="font-size: 14px; margin-bottom: 10px; color: #000; background: #dfdfdf; padding: 2px 5px; border: 1px outset #fff;">INTERAKTYWNY AKORDEON MIRKA v1.3</h3>
+                <AccordionGame client:load />
+                <p style="font-size: 9px; color: #666; margin-top: 5px; text-align: center;">Używaj klawiszy A, S, D, F, G, H, J, K aby grać!</p>
+              </div>
+
+              <DraggableWindow client:load id="accordion" title="Akordeon_Mirka.exe" initialX={250} initialY={150}>
+                <AccordionGame client:load />
+              </DraggableWindow>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <DraggableWindow client:load id="winamp" title="WinAmp 2.81 - RAPTEM Edition" initialX={600} initialY={50}>
+              <WinAmp client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="polonez" title="Mój Polonez" initialX={300} initialY={100}>
+              <PolonezBrowser client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="settings" title="Panel Sterowania Bazaru" initialX={500} initialY={300}>
+              <BazarSettings client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="antivirus" title="Spiritus Shield Pro 95" initialX={150} initialY={400}>
+              <SpiritusShield client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="logs" title="System_Messages.log" initialX={550} initialY={450}>
+              <SystemLogs client:load />
+            </DraggableWindow>
+            
+            <DraggableWindow client:load id="vault" title="Archiwum_Festiwalowe.zip" initialX={700} initialY={200}>
+              <AssetVault client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="terminal" title="KujawiakOS Terminal" initialX={100} initialY={300}>
+              <BazarTerminal client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="onboarding" title="Kreator Ustawień Bazaru" initialX={200} initialY={100}>
+              <OnboardingWizard client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="merch" title="BazarAllegro - Aukcja nr 142823">
+              <MerchListing client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="chat" title="Gadu-Mirek v1.0 (Połączono)">
+              <MirekChat client:load />
+            </DraggableWindow>
+
+            <DraggableWindow client:load id="lore" title="MANIFEST_PROJEKTU.DOC" initialX={150} initialY={50}>
+              <RaptemLore client:load />
+            </DraggableWindow>
+          </div>
+        </section>
+
+        <section id="video" class="main-content-section" style="margin-top: 20px;">
+          <div class="section-folder-tab">📁 C:\WIDEO\VHS_RIP</div>
+          <h2 class="wordart-outline" style="font-size: 2rem;">MULTIMEDIA / WIDEO</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px; margin-top: 20px;">
+            <RetroVideo src="assets/handpan_grill.mp4" title="Handpan_Grill_V0.1.avi" />
+            <RetroVideo src="assets/FINAL Kolorking.mp4" title="Final_Kolorking_Master.mp4" />
+            <div class="win95-inset" style="padding: 15px; background: #c0c0c0; color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px inset #fff;">
+               <img src="assets/construction.gif" style="width: 40px;" />
+               <p style="font-size: 11px; font-weight: bold; margin-top: 10px;">WIĘCEJ WKRÓTCE...</p>
+               <p style="font-size: 9px;">Archiwum VHS jest w trakcie digitalizacji.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="galeria" style="margin-top: 20px;">
+          <div class="section-folder-tab">📁 C:\FOTO\GALERIA</div>
+          <h2 class="wordart-rainbow" style="font-size: 2rem;">GALERIA ZDJĘĆ</h2>
+          <div style="margin-top: 20px;">
+            <Gallery client:load />
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 20px;">
+             <img src="assets/1000001851.webp" style="width: 100%; border: 2px solid #fff;" alt="Gig" />
+             <img src="assets/1000001927.webp" style="width: 100%; border: 2px solid #fff;" alt="Gig" />
+             <img src="assets/1000002066.webp" style="width: 100%; border: 2px solid #fff;" alt="Gig" />
+             <img src="assets/1000001791.webp" style="width: 100%; border: 2px solid #fff; filter: grayscale(1);" alt="Gig" />
+             <img src="assets/1000001815.webp" style="width: 100%; border: 2px solid #fff;" alt="Gig" />
+             <img src="assets/1000001788.webp" style="width: 100%; border: 2px solid #fff;" alt="Gig" />
+          </div>
+        </section>
+
+        <section id="radio" style="margin-top: 20px;">
+          <h2 class="wordart-3dblue" style="font-size: 2rem;">RADIO BABILON</h2>
+          <div class="win95-inset" style="padding: 20px; text-align: center; background: #c0c0c0; color: #000;">
+            <img src="assets/construction.gif" alt="W budowie" style="height: 50px; margin-bottom: 10px;" />
+            <p style="font-weight: bold; font-size: 1.2rem;">TRANSMISJA NA ŻYWO JUŻ WKRÓTCE!</p>
+            <div style="margin-top: 20px; border: 2px inset #fff; background: #000; color: #0f0; padding: 10px; font-family: var(--font-mono); font-size: 0.9rem;">
+              [ CONNECTING TO STREAM... ]<br/>
+              [ SIGNAL STRENGTH: 0% ]<br/>
+              [ PLEASE WAIT FOR THE NEXT BAZAR-WAVE BROADCAST ]
+            </div>
+          </div>
+        </section>
+
+        <section id="gigs" style="margin-top: 20px;">
+          <div class="section-folder-tab">📁 C:\TRASA\KALENDARZ</div>
+          <h2 class="wordart-flame" style="font-size: 2rem;">GIGS / TRASA 2026</h2>
+          <div style="display: flex; gap: 20px; align-items: start; flex-wrap: wrap;">
+            <table class="gigs-table" style="flex-grow: 1; min-width: 300px;">
+              <thead>
+                <tr>
+                  <th>DATA</th>
+                  <th>MIEJSCE</th>
+                  <th>BILETY</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>15.05.2026</td>
+                  <td>REMIZA OSP KOWAL</td>
+                  <td><button class="win95-button">KUP</button></td>
+                </tr>
+                <tr>
+                  <td>22.05.2026</td>
+                  <td>BAZAR KRUSZWICA</td>
+                  <td><button class="win95-button">KUP</button></td>
+                </tr>
+                <tr>
+                  <td>01.06.2026</td>
+                  <td>PRZYSTANEK PKS KONIN</td>
+                  <td><button class="win95-button">KUP</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <img src="assets/dancer_pixel.webp" style="width: 100px; animation: bounce 1s infinite;" alt="Dancer" />
+          </div>
+
+          <div style="margin-top: 40px;">
+            <DraggableWindow client:load id="map" title="Mapa_Regionu.exe" initialX={400} initialY={150}>
+              <KujawyMap client:load />
+            </DraggableWindow>
+          </div>
+        </section>
+
+        <section id="sklep" style="margin-top: 40px;">
+          <h2 class="wordart-rainbow" style="font-size: 2rem;">SKLEPIK / MERCH</h2>
+          <div style="margin-top: 20px;">
+            <MerchWizard client:load />
+          </div>
+        </section>
+
+        <section id="zespol" style="margin-top: 40px;">
+          <h2 class="wordart-3dblue" style="font-size: 2rem;">O NAS / README.TXT</h2>
+          <div style="border: 2px inset #fff; padding: 20px; background: #fff; color: #000; font-family: 'Courier New', Courier, monospace; position: relative;">
+            <div class="wall-of-fame" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; margin-bottom: 20px; border: 2px solid #000;">
+               {Array.from({length: 16}).map((_, i) => (
+                 <img key={i} src={`assets/100000${1787 + (i % 8)}.webp`} style="width: 100%; height: 40px; object-fit: cover;" />
+               ))}
+            </div>
+            <img src="assets/1000002334.webp" style="width: 150px; float: left; margin: 0 15px 10px 0; border: 3px solid #000;" alt="Team member" />
+            <p><strong>RAPTEM</strong> to eksperymentalny kolektyw teatralno-ludowy, który operuje na krawędzi kujawskiej stodoły i cyfrowej otchłani.</p>
+            <p style="margin-top: 10px;">To nie jest zwykła muzyka – to <em>Teatr Prędkości i Przemiany</em>, napędzany przez **Nieskończone Archiwum Algorytmiczne**. Nasze lore nie ma końca – generuje się w czasie rzeczywistym z szumu bazaru i pamięci zbiorowej przodków. Każdy dźwięk akordeonu to nowa linia kodu w wielkim systemie KujawiakOS.</p>
+            <p style="margin-top: 10px; font-weight: bold; text-decoration: underline;">SYSTEM OPERACYJNY:</p>
+            <ul style="margin-top: 5px; list-style: square; padding-left: 20px;">
+              <li>Operator Akordeonu (Medium)</li>
+              <li>Sekcja Bębniarska (Generator Chaosu)</li>
+              <li>Skrzypek (Przekaźnik Sygnału)</li>
+              <li>Wizualizacje VHS (Archiwista Snów)</li>
+            </ul>
+            <img src="assets/new.gif" style="position: absolute; bottom: 5px; right: 5px; height: 20px;" alt="Decor" />
+            <div style="clear: both;"></div>
+          </div>
+        </section>
+
+        <section id="kontakt" style="margin-top: 40px; padding-bottom: 120px;">
+          <h2 class="wordart-outline" style="font-size: 2rem;">KONTAKT / KSIĘGA GOŚCI</h2>
+          <div style="margin-top: 20px;">
+            <div style="background: #c0c0c0; border: 3px outset #fff; padding: 15px; margin-bottom: 20px; display: flex; gap: 20px;">
+              <div style="flex-grow: 1;">
+                <p style="font-weight: bold;">Manager Teatru:</p>
+                <p>Mirek: 500-TEATR-00</p>
+                <p>Email: raptem@bazar.pl</p>
+              </div>
+              <img src="assets/1000003330.webp" style="height: 100px; border: 2px solid #000; filter: grayscale(1);" alt="Contact Photo" />
+            </div>
+            
+            <DraggableWindow client:load id="guestbook" title="Księga_Gości.log" initialX={450} initialY={250}>
+              <Guestbook client:load />
+            </DraggableWindow>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer-frame" style="margin-bottom: 28px; display: flex; align-items: center; gap: 10px;">
+        <img src="assets/new.gif" style="height: 20px;" />
+        <Marquee text="!!! NOWOŚĆ !!! KASETA 'KUJAWIAK SPEKTAKL' DO NABYCIA U PANA JANKA POD SKLEPEM !!! KONCERTY W KAŻDĄ SOBOTĘ !!! WSPARCIE: DZIEDZICTWO LUDOWE !!!" />
+        <img src="assets/construction.gif" style="height: 20px;" />
+      </footer>
+    </div>
+
+    <Taskbar client:load />
+    <MirekHelper client:load />
+
+    <script src="../legacy_archive/scripts/CursorTrail.js"></script>
+    <script>
+      import soundManager from '../legacy_archive/scripts/SoundManager.js';
+      
+      const toggle = document.getElementById('sound-toggle');
+      let soundEnabled = false;
+
+      toggle?.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundManager.toggleSound(soundEnabled);
+        toggle.innerText = soundEnabled ? '🔊 DŹWIĘK: ON' : '🔊 DŹWIĘK: OFF';
+        toggle.style.color = soundEnabled ? '#0f0' : '#000';
+      });
+
+      // Interactive Easter Eggs
+      const spirytus = document.getElementById('spirytus-img');
+      const polonez = document.getElementById('polonez-container');
+      const mirek = document.getElementById('sidebar-mirek');
+      const bsod = document.getElementById('bsod-overlay');
+      
+      // Icons
+      const iconComputer = document.getElementById('icon-computer');
+      const iconTrash = document.getElementById('icon-trash');
+      const iconNetwork = document.getElementById('icon-network');
+      const iconSettings = document.getElementById('icon-settings');
+      const iconAntivirus = document.getElementById('icon-antivirus');
+      const iconLogs = document.getElementById('icon-logs');
+      const iconVault = document.getElementById('icon-vault');
+      const iconTerminal = document.getElementById('icon-terminal');
+      const iconHelp = document.getElementById('icon-help');
+      const iconMerch = document.getElementById('icon-merch');
+      const iconChat = document.getElementById('icon-chat');
+
+      let trashClickCount = 0;
+
+      spirytus?.addEventListener('click', () => {
+        soundManager.play('click');
+        alert("NIE PIJ TYLE, BO CIĘ ZNIEŚNIE! KUJAWIAK-VISION ACTIVATED!");
+        document.body.style.filter = "blur(1.5px) contrast(150%) hue-rotate(45deg)";
+        setTimeout(() => {
+          document.body.style.filter = "";
+        }, 8000);
+      });
+
+      polonez?.addEventListener('click', () => {
+        soundManager.play('click');
+        if (polonez) {
+          polonez.style.transition = "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+          polonez.style.transform = "translateX(300px) rotate(15deg) scale(0.5)";
+          setTimeout(() => {
+             polonez.style.transform = "translateX(0) rotate(0) scale(1)";
+          }, 1000);
+        }
+      });
+
+      mirek?.addEventListener('click', () => {
+        soundManager.play('error');
+        alert("MIREK MÓWI: 'CO SIĘ PATRZYSZ? KUJAWIAKA BYŚ SIĘ NAPIŁ!'");
+        mirek.style.filter = "invert(1) hue-rotate(180deg)";
+        setTimeout(() => {
+          mirek.style.filter = "sepia(0.5)";
+        }, 2000);
+      });
+
+      // Window Management Helpers
+      function openWindow(id) {
+        window.dispatchEvent(new CustomEvent('open-window', { detail: id }));
+      }
+
+      iconComputer?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('polonez');
+      });
+
+      iconNetwork?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('map');
+      });
+
+      iconSettings?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('settings');
+      });
+
+      iconAntivirus?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('antivirus');
+      });
+
+      iconTerminal?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('terminal');
+      });
+
+      iconHelp?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('onboarding');
+      });
+
+      iconMerch?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('merch');
+      });
+
+      iconChat?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('chat');
+      });
+
+      const iconLore = document.getElementById('icon-lore');
+      iconLore?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('lore');
+      });
+
+      iconLogs?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('logs');
+      });
+
+      iconVault?.addEventListener('dblclick', () => {
+        soundManager.play('click');
+        openWindow('vault');
+      });
+
+      // Hook up menu items
+      document.querySelectorAll('.win-menu-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          const href = item.getAttribute('href');
+          if (href === '#muzyka') {
+            e.preventDefault();
+            openWindow('winamp');
+            openWindow('accordion');
+          } else if (href === '#gigs') {
+            e.preventDefault();
+            openWindow('map');
+          } else if (href === '#kontakt') {
+            e.preventDefault();
+            openWindow('guestbook');
+          }
+        });
+      });
+
+      iconTrash?.addEventListener('dblclick', () => {
+        trashClickCount++;
+        if (trashClickCount >= 5) {
+          if (bsod) bsod.style.display = 'block';
+          soundManager.play('error');
+        } else {
+          soundManager.play('error');
+          alert("KOSZ JEST PEŁNY PUSTYCH BUTELEK PO SPIRYTUSIE. NIE MOŻNA USUNĄĆ.");
+        }
+      });
+
+      bsod?.addEventListener('click', () => {
+        bsod.style.display = 'none';
+        trashClickCount = 0;
+      });
+
+      // Global click sound and interaction
+      import chaosEngine from '../legacy_archive/scripts/ChaosEngine.js';
+      import ParticleSystem from '../legacy_archive/scripts/ParticleSystem.js';
+
+      const particles = new ParticleSystem('chaos-particles');
+      if (particles.canvas) {
+        particles.update();
+      }
+
+      document.addEventListener('click', (e) => {
+        soundManager.play('click');
+        chaosEngine.recordInteraction();
+        particles.spawn(e.clientX, e.clientY);
+      });
+
+      window.addEventListener('chaos-flash', () => {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'white';
+        overlay.style.zIndex = '100000';
+        overlay.style.pointerEvents = 'none';
+        document.body.appendChild(overlay);
+        
+        setTimeout(() => {
+          overlay.style.opacity = '0';
+          overlay.style.transition = 'opacity 0.5s';
+          setTimeout(() => overlay.remove(), 500);
+        }, 50);
+      });
+
+      // Auto-open onboarding on first visit
+      if (!localStorage.getItem('onboarding_done')) {
+        setTimeout(() => {
+          openWindow('onboarding');
+          localStorage.setItem('onboarding_done', 'true');
+        }, 3000);
+      }
+
+      // Icon Dragging Logic
+      document.querySelectorAll('.desktop-icon').forEach(icon => {
+        let isDragging = false;
+        let startX, startY;
+
+        icon.addEventListener('mousedown', (e) => {
+          if (e.detail > 1) return; // Ignore double clicks
+          isDragging = true;
+          startX = e.clientX - icon.offsetLeft;
+          startY = e.clientY - icon.offsetTop;
+          icon.style.zIndex = '1000';
+          
+          const onMouseMove = (moveEvent) => {
+            if (isDragging) {
+              icon.style.position = 'fixed';
+              icon.style.left = `${moveEvent.clientX - startX}px`;
+              icon.style.top = `${moveEvent.clientY - startY}px`;
+            }
+          };
+
+          const onMouseUp = (upEvent) => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+            icon.style.zIndex = '10';
+
+            // Check if dropped on trash
+            const trash = document.getElementById('icon-trash');
+            const trashRect = trash.getBoundingClientRect();
+            const iconRect = icon.getBoundingClientRect();
+
+            if (
+              iconRect.left < trashRect.right &&
+              iconRect.right > trashRect.left &&
+              iconRect.top < trashRect.bottom &&
+              iconRect.bottom > trashRect.top &&
+              icon.id !== 'icon-trash'
+            ) {
+              soundManager.play('error');
+              icon.style.display = 'none';
+              alert(`Usunięto skrót: ${icon.querySelector('span').innerText}. Ktoś go znajdzie w koszu...`);
+            }
+          };
+
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+      });
+    </script>
+    <style>
+      .background-texture {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('assets/kujawy_pattern.webp');
+        background-size: 400px;
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .sticker {
+        position: absolute;
+        width: 30px;
+        z-index: 100;
+        image-rendering: pixelated;
+        pointer-events: none;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .main-content-section {
+        margin-left: 90px;
+      }
+
+      .desktop-icons {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 70px);
+        grid-auto-rows: 80px;
+        gap: 2px;
+        padding: 5px;
+        z-index: 10;
+        width: 100%;
+        max-width: 300px;
+        pointer-events: none; /* Let clicks pass through to surface if needed, but icons have pointer-events: auto */
+      }
+
+      .desktop-icon {
+        pointer-events: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 60px;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .desktop-icon img {
+        width: 32px;
+        height: 32px;
+        image-rendering: pixelated;
+        filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.5));
+      }
+
+      .desktop-icon span {
+        font-size: 11px;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        margin-top: 4px;
+        background: rgba(0,0,0,0.5);
+        padding: 2px 6px;
+        border-radius: 2px;
+        max-width: 80px;
+        word-wrap: break-word;
+      }
+
+      .desktop-icon:hover img {
+        filter: brightness(1.2) drop-shadow(0 0 5px cyan);
+      }
+
+      .tooltip {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: yellow;
+        color: black;
+        font-size: 8px;
+        padding: 2px 4px;
+        border: 1px solid black;
+        display: none;
+        white-space: nowrap;
+      }
+
+      #sidebar-mirek:hover + .tooltip {
+        display: block;
+      }
+
+      .section-folder-tab {
+        background: #c0c0c0;
+        border: 2px outset #fff;
+        border-bottom: none;
+        padding: 5px 15px;
+        font-family: var(--font-win95);
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        color: #000;
+        margin-bottom: -2px;
+        position: relative;
+        z-index: 5;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(5deg); }
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+    </style>
+  </body>
+</html>

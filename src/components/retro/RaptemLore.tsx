@@ -1,70 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-const SUBJECTS = [
-  "Duch Bazaru", "KujawiakOS", "Polonez Caro", "Akordeon Mirek", "Ortalionowy Wojownik", 
-  "Kaseta VHS", "Czysty Spirytus", "Remiza w Kowalu", "Bitcrusher", "Sygnał Telewizyjny", 
-  "Kod binarny", "Przystanek PKS", "Kujawska Kiełbasa", "Oberek-Widmo", "Wixa Przejścia",
-  "Archiwum ZIP", "Głos Przodka", "Błękitny Ekran Śmierci", "Lampa Kineskopowa", "Drift w Ciemności"
-];
-
-const VERBS = [
-  "defragmentuje", "przenika", "re-animuje", "szumi w", "transmutuje", 
-  "wywołuje", "handluje", "tańczy z", "generuje", "pętluje", 
-  "zakłóca", "destyluje", "hakuje", "skanuje", "rozszczepia",
-  "pasteryzuje", "synchronizuje", "filtruje", "nadaje", "odbiera"
-];
-
-const OBJECTS = [
-  "cyfrową entropię", "ludową duszę", "przestrzeń bazaru", "zapomniane rytuały", 
-  "szumy i trzaski", "regionalne widma", "kujawską glebę", "napięcie w sieci", 
-  "ortalionowe sny", "analogową pustkę", "pamięć operacyjną", "dźwięk akordeonu",
-  "ciężar tradycji", "błędy systemu", "prymitywną wixę", "zapach ozonu",
-  "echo przeszłości", "cyber-folklor", "algorytm obrzędu", "bitrate kujawiaka"
-];
-
-const MODIFIERS = [
-  "w oparach dziegciu", "pod wpływem wixy", "bez filtra", "z prędkością 56kbps", 
-  "w liminalnej pustce", "między stodołą a serwerownią", "na krawędzi chaosu", 
-  "w formacie .WAV", "poprzez złącze SCART", "w rytmie 3/4", "zgodnie z protokołem",
-  "wbrew logice", "w cyfrowym czyśćcu", "pod osłoną nocy", "w blasku monitora",
-  "przy 88 stopniach Celsjusza", "w nieskończonej pętli", "zniekształcając rzeczywistość"
-];
-
-const generateLoreLine = () => {
-  const s = SUBJECTS[Math.floor(Math.random() * SUBJECTS.length)];
-  const v = VERBS[Math.floor(Math.random() * VERBS.length)];
-  const o = OBJECTS[Math.floor(Math.random() * OBJECTS.length)];
-  const m = MODIFIERS[Math.floor(Math.random() * MODIFIERS.length)];
-  return `${s} ${v} ${o} ${m}.`;
-};
+import { generateLoreLine, DEEP_LORE, generateFolkLyric } from '../../lib/LoreEngine';
 
 const RaptemLore: React.FC = () => {
   const [lines, setLines] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<'live' | 'archive' | 'rituals' | 'lyrics'>('live');
+  const [currentLyric, setCurrentLyric] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Initial lines
     setLines([
-      "MANIFEST PROTOKOŁU RAPTEM v1.0 INITIALIZED...",
-      "Ładowanie modułów folkloru eksperymentalnego...",
-      "Podłączanie do bazy duchów Kujaw...",
-      generateLoreLine(),
+      "MANIFEST PROTOKOŁU RAPTEM v2.5 INITIALIZED...",
+      "Ładowanie głębokich warstw mitologii kujawskiej...",
+      "Synchronizacja z bazarem centralnym...",
       generateLoreLine(),
       generateLoreLine()
     ]);
 
     const interval = setInterval(() => {
-      setLines(prev => [...prev, generateLoreLine()].slice(-50)); // Keep last 50 lines
-    }, 3000);
+      if (activeTab === 'live') {
+        setLines(prev => [...prev, generateLoreLine()].slice(-50));
+      }
+    }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    if (activeTab === 'lyrics') {
+      setCurrentLyric(generateFolkLyric());
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (scrollRef.current && activeTab === 'live') {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [lines]);
+  }, [lines, activeTab]);
 
   return (
     <div className="raptem-lore-container" style={{ 
@@ -74,46 +45,86 @@ const RaptemLore: React.FC = () => {
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
-      minHeight: '400px'
+      minHeight: '450px'
     }}>
-      <header style={{ textAlign: 'center', marginBottom: '15px', borderBottom: '2px double #000', paddingBottom: '10px' }}>
-        <h1 className="wordart-rainbow" style={{ fontSize: '1.5rem', margin: '0' }}>MANIFEST ALGORYTMICZNY</h1>
-        <p style={{ fontSize: '0.7rem', fontWeight: 'bold' }}>[ LIVE_LORE_STREAMING: ACTIVE ]</p>
+      <header style={{ textAlign: 'center', marginBottom: '10px', borderBottom: '2px double #000', paddingBottom: '5px' }}>
+        <h1 className="wordart-rainbow" style={{ fontSize: '1.2rem', margin: '0' }}>ARCHIWUM TEATRALNE</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '5px', marginTop: '10px', flexWrap: 'wrap' }}>
+          <button className={`win95-button ${activeTab === 'live' ? 'active-tab' : ''}`} onClick={() => setActiveTab('live')}>LIVE_FEED</button>
+          <button className={`win95-button ${activeTab === 'archive' ? 'active-tab' : ''}`} onClick={() => setActiveTab('archive')}>KRONIKI</button>
+          <button className={`win95-button ${activeTab === 'rituals' ? 'active-tab' : ''}`} onClick={() => setActiveTab('rituals')}>OBRZĘDY</button>
+          <button className={`win95-button ${activeTab === 'lyrics' ? 'active-tab' : ''}`} onClick={() => setActiveTab('lyrics')}>PIEŚNI</button>
+        </div>
       </header>
 
-      <div className="lore-static-intro" style={{ marginBottom: '20px', fontSize: '0.9rem' }}>
-        <p>
-          To jest <strong>Nieskończone Archiwum Rytuału</strong>. Lore projektu Raptem nie jest statyczne – ono generuje się w czasie rzeczywistym, 
-          pobierając dane z szumu bazaru i pamięci zbiorowej Kujaw. Każda linia to unikalny fragment naszej mitologii.
-        </p>
-      </div>
-
-      <div 
-        ref={scrollRef}
-        className="lore-live-feed win95-inset" 
-        style={{ 
-          flexGrow: 1, 
-          overflowY: 'auto', 
-          background: '#000', 
-          color: '#0f0', 
-          padding: '10px', 
-          fontSize: '0.8rem',
-          fontFamily: 'var(--font-mono)',
-          border: '2px inset #fff'
-        }}
-      >
-        {lines.map((line, i) => (
-          <div key={i} style={{ marginBottom: '4px', opacity: i === lines.length - 1 ? 1 : 0.7 }}>
-            <span style={{ color: '#888', marginRight: '8px' }}>[{new Date().toLocaleTimeString()}]</span>
-            {line}
+      <div className="lore-content-area win95-inset" style={{ flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', background: activeTab === 'live' ? '#000' : '#fff' }}>
+        {activeTab === 'live' && (
+          <div ref={scrollRef} className="lore-live-feed" style={{ flexGrow: 1, overflowY: 'auto', padding: '10px', color: '#0f0', fontSize: '0.75rem' }}>
+            {lines.map((line, i) => (
+              <div key={i} style={{ marginBottom: '4px' }}>
+                <span style={{ color: '#888', marginRight: '8px' }}>[{new Date().toLocaleTimeString()}]</span>
+                {line}
+              </div>
+            ))}
+            <div className="blink" style={{ display: 'inline-block', width: '8px', height: '12px', background: '#0f0' }}></div>
           </div>
-        ))}
-        <div className="blink" style={{ display: 'inline-block', width: '8px', height: '12px', background: '#0f0', marginLeft: '4px' }}></div>
+        )}
+
+        {activeTab === 'archive' && (
+          <div style={{ padding: '15px', overflowY: 'auto', color: '#000' }}>
+            <h3 style={{ borderBottom: '1px solid #000', paddingBottom: '5px' }}>DZIEJE SPEKTAKLU</h3>
+            {DEEP_LORE.events.map((event, i) => (
+              <div key={i} style={{ marginBottom: '20px', borderBottom: '1px dashed #ccc', paddingBottom: '10px' }}>
+                <div style={{ fontWeight: 'bold', color: '#000080' }}>[{event.date}] {event.name}</div>
+                <p style={{ fontSize: '0.85rem', marginTop: '5px' }}>{event.description}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'rituals' && (
+          <div style={{ padding: '15px', overflowY: 'auto', color: '#000' }}>
+            <h3 style={{ borderBottom: '1px solid #000', paddingBottom: '5px' }}>MANUAL OBSŁUGI RZECZYWISTOŚCI</h3>
+            {DEEP_LORE.rituals.map((ritual, i) => (
+              <div key={i} style={{ marginBottom: '20px' }}>
+                <div style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{ritual.name}</div>
+                <ol style={{ fontSize: '0.85rem', marginTop: '5px', paddingLeft: '20px' }}>
+                  {ritual.steps.map((step, j) => <li key={j}>{step}</li>)}
+                </ol>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'lyrics' && (
+          <div style={{ padding: '20px', overflowY: 'auto', color: '#000', textAlign: 'center', background: '#fdf6e3' }}>
+            <h3 style={{ borderBottom: '1px solid #000', paddingBottom: '10px', marginBottom: '15px' }}>ALGORYTMICZNA PIEŚŃ LUDOWA</h3>
+            <div style={{ fontStyle: 'italic', fontSize: '1rem', whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
+              {currentLyric}
+            </div>
+            <button 
+              className="win95-button" 
+              style={{ marginTop: '20px', padding: '5px 15px' }}
+              onClick={() => setCurrentLyric(generateFolkLyric())}
+            >
+              GENERUJ NOWĄ
+            </button>
+          </div>
+        )}
       </div>
 
-      <footer style={{ marginTop: '15px', fontSize: '0.7rem', fontStyle: 'italic', color: '#444' }}>
-        <p>Protokół Raptem v2.1-INFINITE. Wygenerowano algorytmicznie w oparach spirytusu.</p>
+      <footer style={{ marginTop: '10px', fontSize: '0.7rem', display: 'flex', justifyContent: 'space-between' }}>
+        <span>PROTOKÓŁ: RAPTEM_DEEP</span>
+        <span className="blink">STATUS: {activeTab === 'live' ? 'REŻYSERIA' : 'LEKTURA'}</span>
       </footer>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .active-tab {
+          background: #808080 !important;
+          color: white !important;
+          border: 2px inset #fff !important;
+        }
+      `}} />
     </div>
   );
 };

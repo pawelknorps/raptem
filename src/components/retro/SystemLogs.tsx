@@ -1,23 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { generateLoreLine } from '../../lib/LoreEngine';
 
 const SystemLogs: React.FC = () => {
   const [logs, setLogs] = useState<string[]>([
     "[SYSTEM] Inicjalizacja KujawiakOS v1.0...",
     "[INFO] Ładowanie sterowników Poloneza...",
     "[INFO] Spiritus Shield: Status Zielony.",
-    "[SYSTEM] Bazar gotowy do wixy."
+    "[SYSTEM] Bazar gotowy do spektaklu."
   ]);
   const logEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleChaos = (e: any) => {
       const { level } = e.detail;
-      if (Math.random() < 0.2) {
-        let msg = "[INFO] Stabilizacja oberków...";
-        if (level > 0.5) msg = "[WARN] Wykryto podwyższone tętno basów.";
-        if (level > 0.8) msg = "[CRITICAL] SPIRYTUS LEVEL LOW! NATYCHMIASTOWA DOSTAWA REKOMENDOWANA!";
+      if (Math.random() < 0.3) {
+        let msg = "";
+        if (Math.random() < 0.4) {
+          msg = `[LORE] ${generateLoreLine()}`;
+        } else {
+          msg = "[INFO] Stabilizacja inscenizacji...";
+          if (level > 0.5) msg = "[WARN] Wykryto podwyższone tętno rytualne.";
+          if (level > 0.8) msg = "[CRITICAL] ARTISTIC_ENERGY LOW! NATYCHMIASTOWE PRZEBUDZENIE REKOMENDOWANE!";
+        }
         
-        setLogs(prev => [...prev, msg].slice(-20)); // Keep last 20
+        setLogs(prev => [...prev, msg].slice(-20));
       }
     };
 

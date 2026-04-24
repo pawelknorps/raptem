@@ -14,7 +14,7 @@ const MerchListing: React.FC = () => {
           <p style={{ fontSize: '9px', textAlign: 'center', color: '#666' }}>[ Zdjęcie poglądowe ]</p>
         </div>
         <div>
-          <h1 style={{ fontSize: '16px', margin: '0 0 10px 0' }}>KASETA "KUJAWIAK WIXA" - RAPTEM (2026)</h1>
+          <h1 style={{ fontSize: '16px', margin: '0 0 10px 0' }}>KASETA "KUJAWIAK SPEKTAKL" - RAPTEM (2026)</h1>
           <div style={{ background: '#f9f9f9', padding: '10px', border: '1px solid #ddd' }}>
             <p style={{ margin: '0', fontSize: '12px' }}>Cena: <strong style={{ fontSize: '20px', color: '#d00' }}>14,99 PLN</strong></p>
             <p style={{ margin: '5px 0', fontSize: '10px', color: '#444' }}>Dostępność: 3 sztuki</p>

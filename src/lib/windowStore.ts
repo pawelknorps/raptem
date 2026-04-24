@@ -5,7 +5,12 @@ interface WindowState {
   title: string;
   isOpen: boolean;
   isMinimized: boolean;
+  isMaximized: boolean;
   zIndex: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 interface WindowStore {
@@ -15,7 +20,14 @@ interface WindowStore {
   openWindow: (id: string) => void;
   closeWindow: (id: string) => void;
   toggleMinimize: (id: string) => void;
+  toggleMaximize: (id: string) => void;
   focusWindow: (id: string) => void;
+  updatePosition: (id: string, x: number, y: number) => void;
+  updateSize: (id: string, width: number, height: number) => void;
+  isMobile: boolean;
+  setIsMobile: (isMobile: boolean) => void;
+  currentWorkspace: number;
+  setWorkspace: (id: number) => void;
 }
 
 export const useWindowStore = create<WindowStore>((set) => ({
@@ -26,7 +38,7 @@ export const useWindowStore = create<WindowStore>((set) => ({
     return {
       windows: {
         ...state.windows,
-        [id]: { id, title, isOpen: false, isMinimized: false, zIndex: 1000 }
+        [id]: { id, title, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 1000 }
       }
     };
   }),
@@ -46,10 +58,20 @@ export const useWindowStore = create<WindowStore>((set) => ({
   toggleMinimize: (id) => set((state) => ({
     windows: {
       ...state.windows,
-      [id]: { ...state.windows[id], isMinimized: !state.windows[id].isMinimized }
+      [id]: { ...state.windows[id], isMinimized: !state.windows[id].isMinimized, isMaximized: false }
+    }
+  })),
+  toggleMaximize: (id) => set((state) => ({
+    windows: {
+      ...state.windows,
+      [id]: { ...state.windows[id], isMaximized: !state.windows[id].isMaximized, isMinimized: false }
     }
   })),
   focusWindow: (id) => set((state) => {
+    // Only increment maxZ if the window isn't already the top one
+    const currentZ = state.windows[id]?.zIndex || 0;
+    if (currentZ === state.maxZ && Object.keys(state.windows).length > 1) return state;
+    
     const newZ = state.maxZ + 1;
     return {
       maxZ: newZ,
@@ -59,4 +81,21 @@ export const useWindowStore = create<WindowStore>((set) => ({
       }
     };
   }),
+  updatePosition: (id, x, y) => set((state) => ({
+    windows: {
+      ...state.windows,
+      [id]: { ...state.windows[id], x, y }
+    }
+  })),
+  updateSize: (id, width, height) => set((state) => ({
+    windows: {
+      ...state.windows,
+      [id]: { ...state.windows[id], width, height }
+    }
+  })),
+  isMobile: false,
+  setIsMobile: (isMobile) => set({ isMobile }),
+  currentWorkspace: 0,
+  setWorkspace: (id) => set({ currentWorkspace: id }),
 }));
+

@@ -33,7 +33,7 @@ const ChaosHeader: React.FC = () => {
       <div style={{ display: 'flex', gap: '15px', flexGrow: 1 }}>
         <span>SYS_STATUS: {level > 0.8 ? '!! OVERLOAD !!' : 'STABLE'}</span>
         <span>CPU_USAGE: {(level * 100).toFixed(1)}%</span>
-        <span>WIXA_COUNT: {count}</span>
+        <span>FOLK_ENERGY: {count}</span>
         <span style={{ marginLeft: 'auto' }}>KERNEL_V: KUJAWIAK-2026.04</span>
       </div>
       <div style={{ width: '50px', height: '10px', background: '#222', marginLeft: '10px', position: 'relative' }}>

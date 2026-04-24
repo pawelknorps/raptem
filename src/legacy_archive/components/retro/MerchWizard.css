@@ -1,0 +1,87 @@
+.wizard-window {
+  width: 500px;
+  max-width: 95vw;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.wizard-body {
+  display: flex;
+  background: #fff;
+  height: 300px;
+  border: 2px inset #fff;
+}
+
+.wizard-sidebar {
+  width: 160px;
+  background: linear-gradient(180deg, #000080 0%, #1084d0 100%);
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wizard-title {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+}
+
+.wizard-content {
+  flex-grow: 1;
+  padding: 20px;
+  color: #000;
+  overflow-y: auto;
+}
+
+.wizard-content h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.wizard-content p {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.wizard-footer {
+  padding: 10px;
+  background: #c0c0c0;
+}
+
+.wizard-divider {
+  height: 2px;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 10px;
+}
+
+.wizard-btns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.win95-textarea {
+  width: 100%;
+  height: 100px;
+  border: 2px inset #fff;
+  padding: 5px;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+}

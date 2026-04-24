@@ -11,7 +11,7 @@ const OnboardingWizard: React.FC = () => {
         <div className="wizard-step">
           <h3 style={{ borderBottom: '2px solid #888', paddingBottom: '5px' }}>Witaj w KujawiakOS Setup</h3>
           <p style={{ fontSize: '12px', margin: '15px 0' }}>
-            Ten kreator pomoże Ci skonfigurować Twoje doświadczenie z zespołem Raptem. 
+            Ten kreator pomoże Ci skonfigurować Twoje doświadczenie z grupą Raptem. 
             Prosimy o przygotowanie szklanki zimnego napoju i wyregulowanie głośników.
           </p>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>

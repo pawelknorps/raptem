@@ -4,7 +4,7 @@ const PolonezBrowser: React.FC = () => {
   const [currentPath, setCurrentPath] = useState('C:\\');
   const files = [
     { name: 'KONCERTY.XLS', type: 'file', icon: '📄' },
-    { name: 'WIXA_PLANS.DOC', type: 'file', icon: '📄' },
+    { name: 'SPEKTAKL_PLANS.DOC', type: 'file', icon: '📄' },
     { name: 'SPIRYTUS_STOCKS.LOG', type: 'file', icon: '📄' },
     { name: 'ZDJECIA_Z_REMIZY', type: 'dir', icon: '📁' },
     { name: 'BAZAR_SECRET.EXE', type: 'file', icon: '⚙️' },

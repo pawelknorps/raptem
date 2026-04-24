@@ -1,0 +1,39 @@
+---
+interface Props {
+  audioUrl?: string;
+}
+
+const { audioUrl = 'assets/track_01.mp3' } = Astro.props;
+---
+
+<div class="stage-player-container win95-inset" style="padding: 10px; background: #c0c0c0; width: 220px; display: flex; flex-direction: column; gap: 5px;">
+  <div style="font-size: 10px; font-weight: bold; color: #000;">AUDIO_MANIFEST.EXE</div>
+  <button id="teatrBtn" class="win95-button" style="width: 100%; padding: 5px; font-size: 11px;">
+    ▶ TEATR: OFF
+  </button>
+  <div id="teatrStatus" style="font-size: 9px; color: #444; height: 12px;"></div>
+  
+  <audio id="teatrAudio" src={audioUrl} loop></audio>
+</div>
+
+<script>
+  const btn = document.getElementById('teatrBtn');
+  const audio = document.getElementById('teatrAudio') as HTMLAudioElement;
+  const status = document.getElementById('teatrStatus');
+  let isPlaying = false;
+
+  btn?.addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      audio?.play();
+      if (btn) btn.innerText = "⏹ TEATR: ON";
+      if (status) status.innerText = "SPEKTAKL TRWA...";
+      window.dispatchEvent(new CustomEvent('ritual-start'));
+    } else {
+      audio?.pause();
+      if (btn) btn.innerText = "▶ TEATR: OFF";
+      if (status) status.innerText = "";
+      window.dispatchEvent(new CustomEvent('ritual-stop'));
+    }
+  });
+</script>
